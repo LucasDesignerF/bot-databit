@@ -1,0 +1,11 @@
+# Ignorar arquivos sensíveis
+.env
+
+# Ignorar pastas de dados locais
+data/
+venv/
+
+# Ignorar arquivos temporários
+__pycache__/
+*.pyc
+*.log
