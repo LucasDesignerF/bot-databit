@@ -96,7 +96,7 @@ class RegisterCog(commands.Cog):
         )
         embed.set_image(url="https://imgur.com/OiwK8ZC.png")  # Imagem principal
         embed.set_thumbnail(url="https://imgur.com/zH8pL7z.png")  # Thumbnail
-        embed.set_footer(text=f"Sistema de Registro Automático <:logo2:1350090849903710208> | {datetime.now().strftime('%d/%m/%Y %H:%M')}")
+        embed.set_footer(text=f"Sistema de Registro Automático - by CodeProjects")
 
         # Adiciona o botão à view
         view = nextcord.ui.View(timeout=None)

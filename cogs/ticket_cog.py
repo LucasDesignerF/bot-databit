@@ -93,6 +93,7 @@ class TicketCog(commands.Cog):
         )
         embed.set_thumbnail(url="https://imgur.com/FI0J8Aw.png")
         embed.set_image(url="https://imgur.com/OZ95Zry.png")
+        embed.set_footer("Tickets System - by CodeProjects")
 
         options = [
             nextcord.SelectOption(label=cat["name"], value=cat_id, emoji="<:seta:1350166397040463922>", description=cat["desc"])

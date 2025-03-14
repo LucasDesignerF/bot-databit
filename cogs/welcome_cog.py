@@ -50,21 +50,35 @@ class WelcomeCog(commands.Cog):
         # Configurações da imagem
         img_width, img_height = 800, 300
 
-        # Baixa o fundo personalizado
-        background_url = "https://static.vecteezy.com/ti/vetor-gratis/p1/3809900-digital-binario-codigo-dados-fundo-computador-numeros-conceito-tecnologico-vetor.jpg"
+        # URL direta da imagem de fundo (substitua pela URL correta)
+        background_url = "https://static.vecteezy.com/ti/vetor-gratis/p1/15635612-fundo-de-metal-perfurado-preto-aco-de-textura-de-metal-fundo-de-fibra-de-carbono-chapa-perfurada-vetor.jpg"  # Use a URL direta do Imgur
         async with aiohttp.ClientSession() as session:
             async with session.get(background_url) as resp:
+                if resp.status != 200:
+                    raise Exception(f"Erro ao baixar a imagem de fundo: {resp.status}")
                 bg_data = await resp.read()
-        background = Image.open(io.BytesIO(bg_data)).convert("RGBA")
-        background = background.resize((img_width, img_height), Image.LANCZOS)
+
+        # Abre a imagem de fundo
+        try:
+            background = Image.open(io.BytesIO(bg_data)).convert("RGBA")
+            background = background.resize((img_width, img_height), Image.LANCZOS)
+        except Exception as e:
+            raise Exception(f"Erro ao processar a imagem de fundo: {e}")
+
         draw = ImageDraw.Draw(background)
 
         # Baixa o avatar do membro
         async with aiohttp.ClientSession() as session:
             async with session.get(str(member.avatar.url)) as resp:
+                if resp.status != 200:
+                    raise Exception(f"Erro ao baixar o avatar: {resp.status}")
                 avatar_data = await resp.read()
-        avatar = Image.open(io.BytesIO(avatar_data)).convert("RGBA")
-        avatar = avatar.resize((150, 150), Image.LANCZOS)
+
+        try:
+            avatar = Image.open(io.BytesIO(avatar_data)).convert("RGBA")
+            avatar = avatar.resize((150, 150), Image.LANCZOS)
+        except Exception as e:
+            raise Exception(f"Erro ao processar o avatar: {e}")
 
         # Máscara circular para o avatar
         mask = Image.new("L", (150, 150), 0)
@@ -125,10 +139,13 @@ class WelcomeCog(commands.Cog):
         if channel_id:
             channel = self.bot.get_channel(channel_id)
             if channel:
-                welcome_image = await self.create_welcome_image(member)
-                file = nextcord.File(welcome_image, filename="welcome.png")
-                welcome_message = f"Bem-vindo(a) ao servidor, {member.mention}! 🎉"
-                await channel.send(welcome_message, file=file)
+                try:
+                    welcome_image = await self.create_welcome_image(member)
+                    file = nextcord.File(welcome_image, filename="welcome.png")
+                    welcome_message = f"Bem-vindo(a) ao servidor, {member.mention}! 🎉"
+                    await channel.send(welcome_message, file=file)
+                except Exception as e:
+                    print(f"Erro ao criar/enviar a imagem de boas-vindas: {e}")
 
         # Envia mensagem na DM do membro
         try:
