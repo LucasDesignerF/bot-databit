@@ -17,8 +17,6 @@
     <meta name="twitter:description" content="Adicione o DataBit - Bot Free ao seu servidor Discord! Sistema de tickets, registro automático, boas-vindas personalizadas e muito mais. Totalmente gratuito e open-source.">
     <meta name="twitter:image" content="https://imgur.com/nGhNPaL.png">
     <link rel="icon" href="https://imgur.com/CO00DHs.png" type="image/png">
-    <!-- CDN do Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+VegovVc2Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>DataBit - Bot Free | Adicione ao Seu Servidor Discord</title>
     <style>
         /* Reset básico */
@@ -153,6 +151,31 @@
             color: #ff4d79;
         }
 
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1); /* Transforma os ícones em branco */
+            transition: filter 0.3s ease;
+        }
+
+        .social-icons a img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Garante que a imagem se ajuste ao tamanho */
+        }
+
+        .social-icons a:hover {
+            filter: brightness(0) invert(0.8); /* Efeito de hover */
+        }
+
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2rem;
@@ -173,6 +196,15 @@
 
             section p {
                 font-size: 0.9rem;
+            }
+
+            .social-icons {
+                gap: 1rem; /* Reduz o espaçamento entre os ícones em telas menores */
+            }
+
+            .social-icons a {
+                width: 30px;
+                height: 30px; /* Ícones menores em telas menores */
             }
         }
     </style>
@@ -218,12 +250,20 @@
         <!-- Links Úteis -->
         <section>
             <h2>Links Úteis</h2>
-            <p>
-                <a href="https://github.com/LucasDesignerF/bot-databit" target="_blank"><i class="fab fa-github"></i> Repositório no GitHub</a> |
-                <a href="https://codeprojects.discloud.app/" target="_blank"><i class="fas fa-globe"></i> Meu Site</a> |
-                <a href="https://discord.gg/x74fnzcz2S" target="_blank"><i class="fab fa-discord"></i> Discord Code Projects</a> |
-                <a href="https://www.youtube.com/@OFC.RedeGamer" target="_blank"><i class="fab fa-youtube"></i> Canal no YouTube</a>
-            </p>
+            <div class="social-icons">
+                <a href="https://github.com/LucasDesignerF/bot-databit" target="_blank" title="Repositório no GitHub">
+                    <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub">
+                </a>
+                <a href="https://codeprojects.discloud.app/" target="_blank" title="Meu Site">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" alt="Site">
+                </a>
+                <a href="https://discord.gg/x74fnzcz2S" target="_blank" title="Discord Code Projects">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2582/2582637.png" alt="Discord">
+                </a>
+                <a href="https://www.youtube.com/@OFC.RedeGamer" target="_blank" title="Canal no YouTube">
+                    <img src="https://cdn-icons-png.flaticon.com/512/152/152810.png" alt="YouTube">
+                </a>
+            </div>
         </section>
     </main>
 
