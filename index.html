@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adicione o DataBit - Bot Free ao seu servidor Discord! Gratuito, open-source e cheio de recursos úteis.">
+    <meta name="keywords" content="bot discord, databit, bot free">
+    <meta name="author" content="Lucas Designer F">
+    <meta property="og:title" content="DataBit - Bot Free">
+    <meta property="og:description" content="Gerencie seu servidor Discord com facilidade. Gratuito, open-source e cheio de recursos úteis.">
+    <meta property="og:image" content="https://imgur.com/nGhNPaL.png">
+    <meta property="og:url" content="https://codeprojects.discloud.app/">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" href="https://imgur.com/CO00DHs.png" type="image/png">
+    <title>DataBit - Bot Free</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #16213e; /* Azul escuro sofisticado */
+            --text-color: #ffffff; /* Branco puro */
+            --accent-color: #ff6f61; /* Salmão da logo */
+            --secondary-color: #e0e0e0; /* Cinza claro */
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .content {
+            text-align: center;
+            z-index: 1;
+            padding: 3rem;
+            background: rgba(22, 33, 62, 0.85); /* Fundo escuro com transparência */
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            transform: scale(1);
+            transition: transform 0.5s ease;
+        }
+
+        .content:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+            color: var(--secondary-color);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-radius: 50px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.4s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .social-icons {
+            margin: 2rem 0;
+        }
+
+        .social-icons a {
+            margin: 0 1.2rem;
+            text-decoration: none;
+        }
+
+        .social-icons svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--secondary-color);
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-icons svg:hover {
+            fill: var(--accent-color);
+            transform: rotate(10deg) scale(1.2);
+        }
+
+        footer {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--secondary-color);
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #ff877b;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            p { font-size: 1rem; }
+            .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
+            .content { padding: 2rem; }
+            .social-icons a { margin: 0 0.8rem; }
+            .social-icons svg { width: 24px; height: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background 3D -->
+    <div id="canvas-bg"></div>
+
+    <!-- Conteúdo -->
+    <div class="content">
+        <h1>DataBit - Bot Free</h1>
+        <p>Gerencie seu servidor Discord com facilidade. Gratuito, open-source e cheio de recursos úteis.</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
+        <div class="social-icons">
+            <a href="https://www.youtube.com/@OFC.RedeGamer" target="_blank" title="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.7-2-2C19.8 3 12 3 12 3s-7.8 0-9.5.2c-1 .3-1.7 1-2 2C0 7.5 0 12 0 12s0 4.5.5 6.8c.3 1 1 1.7 2 2 1.7.2 9.5.2 9.5.2s7.8 0 9.5-.2c1-.3 1.7-1 2-2 .5-2.3.5-6.8.5-6.8s0-4.5-.5-6.8zM9.8 15.5V8.5l6 3.5-6 3.5z"/></svg>
+            </a>
+            <a href="https://discord.gg/x74fnzcz2S" target="_blank" title="Discord">
+                <svg viewBox="0 0 24 24"><path d="M20.3 4.7A17 17 0 0015 3.4c-.2.4-.5 1-.6 1.4a15.8 15.8 0 00-4.8 0c-.1-.4-.4-1-.6-1.4A17 17 0 003.7 4.7C1 8-1 15 2 19.3c2 .8 4 1.3 6 1.6 0-.5.1-1 .2-1.5-.7-.2-1.4-.6-2-1 .5-.4 1-.7 1.5-1 3 1 6.2 1 9.2 0 .5.3 1 .6 1.5 1-.6.4-1.3.8-2 1 .1.5.2 1 .2 1.5 2-.3 4-.8 6-1.6C25 15 23 8 20.3 4.7zM8.8 15.8c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8zm6.4 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8z"/></svg>
+            </a>
+            <a href="https://codeprojects.discloud.app/" target="_blank" title="Site">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a6 6 0 100 12 6 6 0 000-12z"/></svg>
+            </a>
+            <a href="https://github.com/LucasDesignerF/bot-databit" target="_blank" title="GitHub">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.8.61-3.4-1.35-3.4-1.35-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1 1.53 1 .87 1.5 2.28 1.07 2.84.82.09-.65.35-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9 0-1.08.39-1.97 1.03-2.66-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0112 6.8c.85 0 1.7.11 2.5.33 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.38.1 2.63.64.69 1.03 1.58 1.03 2.66 0 3.8-2.3 4.65-4.5 4.9.35.3.62.9.62 1.8v2.67c0 .26.18.58.69.48A10 10 0 0012 2z"/></svg>
+            </a>
+        </div>
+        <footer>Desenvolvido por <a href="https://github.com/LucasDesignerF" target="_blank">Lucas Dev</a></footer>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script>
+        // Configuração do Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-bg').appendChild(renderer.domElement);
+
+        // Partículas com cor salmão
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 800;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 150;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.15,
+            color: 0xff6f61, /* Salmão */
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 50;
+
+        // Animação suave
+        function animate() {
+            requestAnimationFrame(animate);
+            particlesMesh.rotation.x += 0.0005;
+            particlesMesh.rotation.y += 0.001;
+            const positions = particlesMesh.geometry.attributes.position.array;
+            for (let i = 0; i < particlesCount * 3; i += 3) {
+                positions[i + 2] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.01;
+                if (positions[i + 2] > 75) positions[i + 2] = -75;
+            }
+            particlesMesh.geometry.attributes.position.needsUpdate = true;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsividade
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
