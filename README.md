@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo" width="150"/>
 </p>
@@ -11,10 +10,16 @@
     <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT"/>
   </a>
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square&logo=python" alt="Python 3.8+"/>
+    <img src="https://img.shields.io/badge/Python-3.12.7-3776AB?style=flat-square&logo=python" alt="Python 3.12.7"/>
   </a>
   <a href="https://nextcord.readthedocs.io/">
-    <img src="https://img.shields.io/badge/Nextcord-2.0%2B-7289DA?style=flat-square&logo=discord" alt="Nextcord 2.0+"/>
+    <img src="https://img.shields.io/badge/Nextcord-3.0.1-7289DA?style=flat-square&logo=discord" alt="Nextcord 3.0.1"/>
+  </a>
+  <a href="https://github.com/LucasDesignerF/bot-databit/releases">
+    <img src="https://img.shields.io/github/v/release/LucasDesignerF/bot-databit?style=flat-square&color=orange" alt="Versão do DataBit"/>
+  </a>
+  <a href="https://github.com/LucasDesignerF/bot-databit/commits/main">
+    <img src="https://img.shields.io/github/last-commit/LucasDesignerF/bot-databit?style=flat-square&color=purple" alt="Último Commit"/>
   </a>
 </p>
 
@@ -150,4 +155,4 @@ Licenciado sob a **[MIT License](LICENSE)**. Veja mais detalhes no arquivo de li
 <p align="center">
   Feito com ❤️ por <strong>CodeProjects</strong> e <strong>RedeGamer - Serviços Escaláveis para seu Game</strong>
 </p>
-```
+
