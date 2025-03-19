@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Adicione o DataBit - Bot Free ao seu servidor Discord! Gratuito, open-source e cheio de recursos úteis.">
-    <meta name="keywords" content="bot discord, databit, bot free">
-    <meta name="author" content="Lucas Designer F">
-    <meta property="og:title" content="DataBit - Bot Free">
-    <meta property="og:description" content="Gerencie seu servidor Discord com facilidade. Gratuito, open-source e cheio de recursos úteis.">
-    <meta property="og:image" content="https://imgur.com/nGhNPaL.png">
+    <meta name="description" content="Adicione o DataBit ao seu servidor Discord! Um bot poderoso para tickets, registros e boas-vindas, gratuito e open-source.">
+    <meta name="keywords" content="bot discord, databit, tickets, registro, boas-vindas, open-source">
+    <meta name="author" content="LucasDesignerF, CodeProjects, RedeGamer">
+    <meta property="og:title" content="DataBit - Bot Discord Poderoso">
+    <meta property="og:description" content="Gerencie seu servidor com facilidade: tickets, registros e boas-vindas personalizadas. Gratuito e open-source!">
+    <meta property="og:image" content="https://imgur.com/FI0J8Aw.png">
     <meta property="og:url" content="https://codeprojects.discloud.app/">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="https://imgur.com/CO00DHs.png" type="image/png">
-    <title>DataBit - Bot Free</title>
+    <link rel="icon" href="https://imgur.com/FI0J8Aw.png" type="image/png">
+    <title>DataBit - Bot Discord Poderoso</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -24,6 +24,7 @@
             --accent-color: #ff6f61; /* Salmão da logo */
             --secondary-color: #e0e0e0; /* Cinza claro */
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --card-bg: rgba(22, 33, 62, 0.9); /* Fundo escuro com transparência */
         }
 
         * {
@@ -36,11 +37,11 @@
             font-family: 'Poppins', sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -54,40 +55,90 @@
             opacity: 0.8;
         }
 
-        .content {
+        header {
             text-align: center;
+            padding: 4rem 2rem 2rem;
             z-index: 1;
-            padding: 3rem;
-            background: rgba(22, 33, 62, 0.85); /* Fundo escuro com transparência */
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            max-width: 700px;
-            transform: scale(1);
-            transition: transform 0.5s ease;
         }
 
-        .content:hover {
-            transform: scale(1.02);
+        header img {
+            width: 150px;
+            margin-bottom: 1rem;
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 1.2rem;
             color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 2px;
+            margin-bottom: 0.5rem;
         }
 
-        p {
+        header p {
             font-size: 1.2rem;
             font-weight: 300;
-            margin-bottom: 2.5rem;
             color: var(--secondary-color);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badges {
+            margin: 2rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .content {
+            max-width: 900px;
+            width: 100%;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        .section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .section p, .section ul {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            font-weight: 300;
+        }
+
+        .section ul {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .section ul li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .section ul li::before {
+            content: "✨";
+            color: var(--accent-color);
+            margin-right: 0.5rem;
         }
 
         .cta-button {
@@ -102,61 +153,26 @@
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.4s ease;
-        }
-
-        .cta-button:hover::before {
-            left: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .cta-button:hover {
             transform: scale(1.05);
-        }
-
-        .social-icons {
-            margin: 2rem 0;
-        }
-
-        .social-icons a {
-            margin: 0 1.2rem;
-            text-decoration: none;
-        }
-
-        .social-icons svg {
-            width: 28px;
-            height: 28px;
-            fill: var(--secondary-color);
-            transition: fill 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-icons svg:hover {
-            fill: var(--accent-color);
-            transform: rotate(10deg) scale(1.2);
+            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.5);
         }
 
         footer {
+            text-align: center;
+            padding: 2rem;
             font-size: 1rem;
-            font-weight: 300;
             color: var(--secondary-color);
+            z-index: 1;
         }
 
         footer a {
             color: var(--accent-color);
             text-decoration: none;
-            transition: color 0.3s ease;
+            font-weight: 600;
         }
 
         footer a:hover {
@@ -166,11 +182,11 @@
         /* Responsividade */
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
-            p { font-size: 1rem; }
+            header p { font-size: 1rem; }
+            .section h2 { font-size: 1.5rem; }
             .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
-            .content { padding: 2rem; }
-            .social-icons a { margin: 0 0.8rem; }
-            .social-icons svg { width: 24px; height: 24px; }
+            .content { padding: 1rem; }
+            .badges img { width: 100px; }
         }
     </style>
 </head>
@@ -178,27 +194,62 @@
     <!-- Background 3D -->
     <div id="canvas-bg"></div>
 
-    <!-- Conteúdo -->
-    <div class="content">
-        <h1>DataBit - Bot Free</h1>
-        <p>Gerencie seu servidor Discord com facilidade. Gratuito, open-source e cheio de recursos úteis.</p>
-        <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
-        <div class="social-icons">
-            <a href="https://www.youtube.com/@OFC.RedeGamer" target="_blank" title="YouTube">
-                <svg viewBox="0 0 24 24"><path d="M23.5 6.2c-.3-1-1-1.7-2-2C19.8 3 12 3 12 3s-7.8 0-9.5.2c-1 .3-1.7 1-2 2C0 7.5 0 12 0 12s0 4.5.5 6.8c.3 1 1 1.7 2 2 1.7.2 9.5.2 9.5.2s7.8 0 9.5-.2c1-.3 1.7-1 2-2 .5-2.3.5-6.8.5-6.8s0-4.5-.5-6.8zM9.8 15.5V8.5l6 3.5-6 3.5z"/></svg>
+    <!-- Header -->
+    <header>
+        <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo">
+        <h1>DataBit 🤖</h1>
+        <p>Um bot Discord poderoso para tickets, registros e boas-vindas</p>
+        <div class="badges">
+            <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">
+                <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT">
             </a>
-            <a href="https://discord.gg/x74fnzcz2S" target="_blank" title="Discord">
-                <svg viewBox="0 0 24 24"><path d="M20.3 4.7A17 17 0 0015 3.4c-.2.4-.5 1-.6 1.4a15.8 15.8 0 00-4.8 0c-.1-.4-.4-1-.6-1.4A17 17 0 003.7 4.7C1 8-1 15 2 19.3c2 .8 4 1.3 6 1.6 0-.5.1-1 .2-1.5-.7-.2-1.4-.6-2-1 .5-.4 1-.7 1.5-1 3 1 6.2 1 9.2 0 .5.3 1 .6 1.5 1-.6.4-1.3.8-2 1 .1.5.2 1 .2 1.5 2-.3 4-.8 6-1.6C25 15 23 8 20.3 4.7zM8.8 15.8c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8zm6.4 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8z"/></svg>
+            <a href="https://www.python.org/">
+                <img src="https://img.shields.io/badge/Python-3.12.7-3776AB?style=flat-square&logo=python" alt="Python 3.12.7">
             </a>
-            <a href="https://codeprojects.discloud.app/" target="_blank" title="Site">
-                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a6 6 0 100 12 6 6 0 000-12z"/></svg>
+            <a href="https://nextcord.readthedocs.io/">
+                <img src="https://img.shields.io/badge/Nextcord-3.0.1-7289DA?style=flat-square&logo=discord" alt="Nextcord 3.0.1">
             </a>
-            <a href="https://github.com/LucasDesignerF/bot-databit" target="_blank" title="GitHub">
-                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-3.16 19.5c.5.09.68-.22.68-.48v-1.7c-2.8.61-3.4-1.35-3.4-1.35-.46-1.16-1.12-1.47-1.12-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1 1.53 1 .87 1.5 2.28 1.07 2.84.82.09-.65.35-1.07.63-1.32-2.2-.25-4.5-1.1-4.5-4.9 0-1.08.39-1.97 1.03-2.66-.1-.25-.45-1.26.1-2.63 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0112 6.8c.85 0 1.7.11 2.5.33 1.9-1.29 2.74-1.02 2.74-1.02.55 1.37.2 2.38.1 2.63.64.69 1.03 1.58 1.03 2.66 0 3.8-2.3 4.65-4.5 4.9.35.3.62.9.62 1.8v2.67c0 .26.18.58.69.48A10 10 0 0012 2z"/></svg>
+            <a href="https://github.com/LucasDesignerF/bot-databit/releases">
+                <img src="https://img.shields.io/badge/Version-v1.0.0--alpha-orange?style=flat-square" alt="Versão do DataBit">
+            </a>
+            <a href="https://discord.gg/AhcHfUpNeM">
+                <img src="https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=flat-square&logo=discord" alt="Servidor Oficial">
             </a>
         </div>
-        <footer>Desenvolvido por <a href="https://github.com/LucasDesignerF" target="_blank">Lucas Dev</a></footer>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="content">
+        <div class="section">
+            <h2>🌟 O que é o DataBit?</h2>
+            <p>O <strong>DataBit</strong> é um bot Discord avançado projetado para simplificar a gestão de servidores. Com sistemas integrados de <strong>tickets</strong>, <strong>registro de membros</strong> e <strong>boas-vindas personalizadas</strong>, ele é escalável, personalizável e perfeito para comunidades de qualquer tamanho.</p>
+        </div>
+
+        <div class="section">
+            <h2>✨ Recursos Principais</h2>
+            <ul>
+                <li><strong>🎟 Sistema de Tickets:</strong> Criação por categorias, painel interativo, fechamento automático e avaliações.</li>
+                <li><strong>📝 Sistema de Registro:</strong> Embed com botão, atribuição de cargos e integração com boas-vindas.</li>
+                <li><strong>🎉 Sistema de Boas-Vindas:</strong> Mensagens personalizadas com imagens, cargos automáticos e DMs.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Como Adicionar</h2>
+            <p>Adicione o DataBit ao seu servidor agora mesmo e comece a gerenciar sua comunidade com facilidade!</p>
+            <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
+        </div>
+
+        <div class="section">
+            <h2>📜 Licença e Contribuição</h2>
+            <p>Licenciado sob a <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">MIT License</a>. Contribua no <a href="https://github.com/LucasDesignerF/bot-databit">GitHub</a>!</p>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        Feito com ❤️ por <a href="https://github.com/LucasDesignerF">LucasDesignerF</a>, <a href="https://codeprojects.discloud.app/">CodeProjects</a> e <a href="https://discord.gg/x74fnzcz2S">RedeGamer</a>
+    </footer>
 
     <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
