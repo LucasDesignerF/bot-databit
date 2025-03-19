@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Adicione o DataBit ao seu servidor Discord! Um bot poderoso para tickets, registros e boas-vindas, gratuito e open-source.">
-    <meta name="keywords" content="bot discord, databit, tickets, registro, boas-vindas, open-source">
+    <meta name="description" content="Adicione o DataBit ao seu servidor Discord! Um bot poderoso para tickets, registros, boas-vindas e proteção anti-raid, gratuito e open-source.">
+    <meta name="keywords" content="bot discord, databit, tickets, registro, boas-vindas, anti-raid, open-source">
     <meta name="author" content="LucasDesignerF, CodeProjects, RedeGamer">
     <meta property="og:title" content="DataBit - Bot Discord Poderoso">
-    <meta property="og:description" content="Gerencie seu servidor com facilidade: tickets, registros e boas-vindas personalizadas. Gratuito e open-source!">
+    <meta property="og:description" content="Gerencie e proteja seu servidor com facilidade: tickets, registros, boas-vindas e anti-raid. Gratuito e open-source!">
     <meta property="og:image" content="https://imgur.com/FI0J8Aw.png">
     <meta property="og:url" content="https://codeprojects.discloud.app/">
     <meta name="twitter:card" content="summary_large_image">
@@ -84,61 +84,49 @@
             margin: 0 auto;
         }
 
-        .badges {
-            margin: 2rem 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-
         .content {
-            max-width: 900px;
+            max-width: 1200px;
             width: 100%;
             padding: 2rem;
             z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
         }
 
-        .section {
+        .card {
             background: var(--card-bg);
             border-radius: 20px;
             padding: 2rem;
-            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 360px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .section:hover {
-            transform: translateY(-5px);
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 111, 97, 0.3);
         }
 
-        .section h2 {
+        .card h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
             color: var(--accent-color);
             margin-bottom: 1rem;
         }
 
-        .section p, .section ul {
+        .card p {
             font-size: 1rem;
             color: var(--secondary-color);
             font-weight: 300;
-        }
-
-        .section ul {
-            list-style: none;
-            padding-left: 1rem;
-        }
-
-        .section ul li {
-            margin-bottom: 0.8rem;
-            position: relative;
-        }
-
-        .section ul li::before {
-            content: "✨";
-            color: var(--accent-color);
-            margin-right: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
         }
 
         .cta-button {
@@ -183,10 +171,10 @@
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             header p { font-size: 1rem; }
-            .section h2 { font-size: 1.5rem; }
+            .card h2 { font-size: 1.5rem; }
+            .card { max-width: 100%; }
             .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
-            .content { padding: 1rem; }
-            .badges img { width: 100px; }
+            .content { padding: 1rem; gap: 1rem; }
         }
     </style>
 </head>
@@ -198,57 +186,38 @@
     <header>
         <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo">
         <h1>DataBit 🤖</h1>
-        <p>Um bot Discord poderoso para tickets, registros e boas-vindas</p>
-        <div class="badges">
-            <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">
-                <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT">
-            </a>
-            <a href="https://www.python.org/">
-                <img src="https://img.shields.io/badge/Python-3.12.7-3776AB?style=flat-square&logo=python" alt="Python 3.12.7">
-            </a>
-            <a href="https://nextcord.readthedocs.io/">
-                <img src="https://img.shields.io/badge/Nextcord-3.0.1-7289DA?style=flat-square&logo=discord" alt="Nextcord 3.0.1">
-            </a>
-            <a href="https://github.com/LucasDesignerF/bot-databit/releases">
-                <img src="https://img.shields.io/badge/Version-v1.0.0--alpha-orange?style=flat-square" alt="Versão do DataBit">
-            </a>
-            <a href="https://discord.gg/AhcHfUpNeM">
-                <img src="https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=flat-square&logo=discord" alt="Servidor Oficial">
-            </a>
-        </div>
+        <p>Um bot Discord poderoso para gerenciar e proteger sua comunidade</p>
     </header>
 
     <!-- Conteúdo Principal -->
     <div class="content">
-        <div class="section">
-            <h2>🌟 O que é o DataBit?</h2>
-            <p>O <strong>DataBit</strong> é um bot Discord avançado projetado para simplificar a gestão de servidores. Com sistemas integrados de <strong>tickets</strong>, <strong>registro de membros</strong> e <strong>boas-vindas personalizadas</strong>, ele é escalável, personalizável e perfeito para comunidades de qualquer tamanho.</p>
+        <div class="card">
+            <h2>📝 Registro</h2>
+            <p>Simplifique a entrada de membros com um sistema de registro interativo. Embed personalizável com botão para atribuir cargos automaticamente e integração com boas-vindas.</p>
         </div>
 
-        <div class="section">
-            <h2>✨ Recursos Principais</h2>
-            <ul>
-                <li><strong>🎟 Sistema de Tickets:</strong> Criação por categorias, painel interativo, fechamento automático e avaliações.</li>
-                <li><strong>📝 Sistema de Registro:</strong> Embed com botão, atribuição de cargos e integração com boas-vindas.</li>
-                <li><strong>🎉 Sistema de Boas-Vindas:</strong> Mensagens personalizadas com imagens, cargos automáticos e DMs.</li>
-            </ul>
+        <div class="card">
+            <h2>🎟 Tickets</h2>
+            <p>Gerencie suporte com um sistema de tickets avançado. Categorias como Suporte Técnico e Parcerias, painéis interativos, notificações de inatividade e avaliações após o fechamento.</p>
         </div>
 
-        <div class="section">
-            <h2>⚙️ Como Adicionar</h2>
-            <p>Adicione o DataBit ao seu servidor agora mesmo e comece a gerenciar sua comunidade com facilidade!</p>
-            <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
+        <div class="card">
+            <h2>🛡 Anti-Raid</h2>
+            <p>Proteja seu servidor contra raids com monitoramento de mensagens, canais, bans, cargos e convites. Ative lockdowns automáticos e configure limites personalizados.</p>
         </div>
 
-        <div class="section">
-            <h2>📜 Licença e Contribuição</h2>
-            <p>Licenciado sob a <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">MIT License</a>. Contribua no <a href="https://github.com/LucasDesignerF/bot-databit">GitHub</a>!</p>
+        <div class="card">
+            <h2>🎉 Boas-Vindas</h2>
+            <p>Dê as boas-vindas aos novos membros com mensagens personalizadas, imagens dinâmicas com avatares, atribuição de cargos e DMs automáticas.</p>
         </div>
     </div>
 
+    <!-- Call to Action -->
+    <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
+
     <!-- Footer -->
     <footer>
-        Feito com ❤️ por <a href="https://github.com/LucasDesignerF">LucasDesignerF</a>, <a href="https://codeprojects.discloud.app/">CodeProjects</a> e <a href="https://discord.gg/x74fnzcz2S">RedeGamer</a>
+        Feito com ❤️ por <a href="https://github.com/LucasDesignerF">LucasDesignerF</a>, <a href="https://codeprojects.discloud.app/">CodeProjects</a> e <a href="https://discord.gg/x74fnzcz2S">RedeGamer</a> | <a href="https://discord.gg/AhcHfUpNeM">Servidor Oficial</a>
     </footer>
 
     <!-- Three.js -->
