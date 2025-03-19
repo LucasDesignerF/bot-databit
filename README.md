@@ -16,10 +16,22 @@
     <img src="https://img.shields.io/badge/Nextcord-3.0.1-7289DA?style=flat-square&logo=discord" alt="Nextcord 3.0.1"/>
   </a>
   <a href="https://github.com/LucasDesignerF/bot-databit/releases">
-    <img src="https://img.shields.io/github/v/release/LucasDesignerF/bot-databit?style=flat-square&color=orange" alt="Versão do DataBit"/>
+    <img src="https://img.shields.io/badge/Version-v1.0.0--alpha-orange?style=flat-square" alt="Versão do DataBit"/>
   </a>
   <a href="https://github.com/LucasDesignerF/bot-databit/commits/main">
     <img src="https://img.shields.io/github/last-commit/LucasDesignerF/bot-databit?style=flat-square&color=purple" alt="Último Commit"/>
+  </a>
+  <a href="https://discord.gg/AhcHfUpNeM">
+    <img src="https://img.shields.io/badge/Discord-Join%20Us-5865F2?style=flat-square&logo=discord" alt="Servidor Oficial"/>
+  </a>
+  <a href="https://github.com/LucasDesignerF/bot-databit">
+    <img src="https://img.shields.io/badge/Status-Online-00FF00?style=flat-square" alt="Status do Bot"/>
+  </a>
+  <a href="https://github.com/LucasDesignerF/bot-databit">
+    <img src="https://img.shields.io/github/languages/top/LucasDesignerF/bot-databit?style=flat-square&color=FFD700" alt="Linguagem Principal"/>
+  </a>
+  <a href="https://github.com/LucasDesignerF/bot-databit/releases">
+    <img src="https://img.shields.io/badge/Downloads-0+-blueviolet?style=flat-square" alt="Downloads"/>
   </a>
 </p>
 
