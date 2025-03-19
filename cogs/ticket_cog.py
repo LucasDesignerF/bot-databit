@@ -2,7 +2,10 @@
 # Description: Sistema de tickets personalizado para múltiplos servidores
 # Date of Creation: 20/03/2025
 # Created by: Grok (xAI) & CodeProjects
-# Version: 6.0
+# Modified by: Grok (xAI) & CodeProjects
+# Date of Modification: 19/03/2025
+# Reason of Modification: Adição do comando /person_tickets para personalização de embeds
+# Version: 6.1
 # Developer Of Version: Grok (xAI), CodeProjects, RedeGamer - Serviços Escaláveis para seu Game
 
 import nextcord
@@ -44,7 +47,47 @@ class TicketCog(commands.Cog):
             "embed_color_rgb": [43, 45, 49],
             "tempo_notificacao_horas": 24,
             "tempo_fechamento_horas": 48,
-            "menu_message_id": None
+            "menu_message_id": None,
+            "embed_menu": {
+                "title": "<:logo2:1350090849903710208> Ticket's System",
+                "description": (
+                    "Bem-vindo ao nosso sistema de tickets! 🎟\n\n"
+                    "Aqui você pode abrir um ticket para receber suporte técnico, resolver problemas com compras, "
+                    "discutir parcerias ou até mesmo se candidatar a oportunidades de trabalho.\n\n"
+                    "**Como funciona?**\n"
+                    "1. Selecione uma categoria abaixo.\n"
+                    "2. Um canal privado será criado para você.\n"
+                    "3. Nossa equipe entrará em contato o mais rápido possível.\n\n"
+                    "Estamos aqui para ajudar! 😊"
+                ),
+                "thumbnail": "https://imgur.com/FI0J8Aw.png",
+                "image": "https://imgur.com/OZ95Zry.png",
+                "footer": "Tickets System - by CodeProjects"
+            },
+            "embed_panel": {
+                "title": "<:open:1350167913591734363> Novo Ticket Aberto!",
+                "thumbnail": "https://imgur.com/FI0J8Aw.png",
+                "image": "https://imgur.com/iTQBsLh.png"
+            },
+            "embed_assumed": {
+                "title": "Ticket Assumido",
+                "thumbnail": "",
+                "image": "",
+                "footer": ""
+            },
+            "embed_inactivity": {
+                "title": "🚨 Aviso de Inatividade",
+                "thumbnail": "",
+                "image": "",
+                "footer": ""
+            },
+            "embed_evaluation": {
+                "title": "📝 Avalie o Atendimento",
+                "description": "Como você avalia o atendimento recebido?",
+                "thumbnail": "",
+                "image": "",
+                "footer": ""
+            }
         }
         if os.path.exists(config_file):
             with open(config_file, "r", encoding="utf-8") as f:
@@ -64,7 +107,6 @@ class TicketCog(commands.Cog):
         return {}
 
     def save_ticket(self, guild_id: str, ticket_id: str, data: dict):
-        # Converte objetos datetime para strings antes de salvar
         data = data.copy()
         if "created_at" in data and isinstance(data["created_at"], datetime):
             data["created_at"] = data["created_at"].isoformat()
@@ -77,23 +119,18 @@ class TicketCog(commands.Cog):
     # Embed do Menu
     async def create_menu_embed(self, guild_id: str, channel: nextcord.TextChannel):
         config = self.load_config(guild_id)
+        embed_config = config["embed_menu"]
         embed = nextcord.Embed(
-            title="<:logo2:1350090849903710208> Ticket's System",
-            description=(
-                "Bem-vindo ao nosso sistema de tickets! 🎟\n\n"
-                "Aqui você pode abrir um ticket para receber suporte técnico, resolver problemas com compras, "
-                "discutir parcerias ou até mesmo se candidatar a oportunidades de trabalho.\n\n"
-                "**Como funciona?**\n"
-                "1. Selecione uma categoria abaixo.\n"
-                "2. Um canal privado será criado para você.\n"
-                "3. Nossa equipe entrará em contato o mais rápido possível.\n\n"
-                "Estamos aqui para ajudar! 😊"
-            ),
+            title=embed_config["title"],
+            description=embed_config["description"],
             color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
         )
-        embed.set_thumbnail(url="https://imgur.com/FI0J8Aw.png")
-        embed.set_image(url="https://imgur.com/OZ95Zry.png")
-        embed.set_footer("Tickets System - by CodeProjects")
+        if embed_config["thumbnail"]:
+            embed.set_thumbnail(url=embed_config["thumbnail"])
+        if embed_config["image"]:
+            embed.set_image(url=embed_config["image"])
+        if embed_config["footer"]:
+            embed.set_footer(text=embed_config["footer"])
 
         options = [
             nextcord.SelectOption(label=cat["name"], value=cat_id, emoji="<:seta:1350166397040463922>", description=cat["desc"])
@@ -103,7 +140,6 @@ class TicketCog(commands.Cog):
 
         async def select_callback(interaction: Interaction):
             category_id = interaction.data["values"][0]
-            category = self.ticket_categories[category_id]
             ticket_channel = await self.create_ticket_channel(interaction, guild_id, category_id)
             if ticket_channel:
                 await interaction.response.send_message(f"Ticket criado: {ticket_channel.mention}", ephemeral=True)
@@ -153,9 +189,10 @@ class TicketCog(commands.Cog):
         ticket_data = self.active_tickets[ticket_key]
         category = self.ticket_categories[ticket_data["category"]]
         created_at = ticket_data["created_at"].strftime("%d/%m/%Y %H:%M")
+        embed_config = config["embed_panel"]
 
         embed = nextcord.Embed(
-            title="<:open:1350167913591734363> Novo Ticket Aberto!",
+            title=embed_config["title"],
             description=(
                 f"<:readd:1350154929746215037> **Quem Abriu:** {user.mention}\n"
                 f"<:readd:1350154929746215037> **Categoria:** {category['name']}\n"
@@ -164,22 +201,21 @@ class TicketCog(commands.Cog):
             ),
             color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
         )
-        embed.set_thumbnail(url="https://imgur.com/FI0J8Aw.png")
-        embed.set_image(url="https://imgur.com/iTQBsLh.png")
+        if embed_config["thumbnail"]:
+            embed.set_thumbnail(url=embed_config["thumbnail"])
+        if embed_config["image"]:
+            embed.set_image(url=embed_config["image"])
 
         view = ui.View(timeout=None)
         
-        # Botão para assumir ticket
         assume_button = ui.Button(label="Assumir Ticket", style=nextcord.ButtonStyle.green, emoji="<:accept:1350169522077962324>")
         assume_button.callback = lambda i: self.assume_ticket(i, channel, user, config, ticket_key, embed, view)
         view.add_item(assume_button)
 
-        # Botão para encerrar ticket
         close_button = ui.Button(label="Encerrar Ticket", style=nextcord.ButtonStyle.red, emoji="<:rejects:1350169812751614064>")
         close_button.callback = lambda i: self.close_ticket(i, channel, user, config, ticket_key, embed, view)
         view.add_item(close_button)
 
-        # Botão para notificar inatividade
         notify_button = ui.Button(label="Notificar", style=nextcord.ButtonStyle.grey, emoji="<:notify:1350170693978951820>")
         notify_button.callback = lambda i: self.notify_inactivity(i, channel, user, config, ticket_key, embed, view)
         view.add_item(notify_button)
@@ -200,6 +236,7 @@ class TicketCog(commands.Cog):
         ticket_data["last_activity"] = datetime.now(self.br_tz)
         category = self.ticket_categories[ticket_data["category"]]
         created_at = ticket_data["created_at"].strftime("%d/%m/%Y %H:%M")
+        embed_config = config["embed_assumed"]
         embed.description = (
             f"<:readd:1350154929746215037> **Quem Abriu:** {user.mention}\n"
             f"<:readd:1350154929746215037> **Categoria:** {category['name']}\n"
@@ -209,12 +246,20 @@ class TicketCog(commands.Cog):
         await channel.send(f"{user.mention}, seu ticket foi assumido por {interaction.user.mention}!")
         await interaction.message.edit(embed=embed, view=view)
 
+        assumed_embed = nextcord.Embed(
+            title=embed_config["title"],
+            description=f"Seu ticket no canal {channel.mention} foi assumido por {interaction.user.mention}.",
+            color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
+        )
+        if embed_config["thumbnail"]:
+            assumed_embed.set_thumbnail(url=embed_config["thumbnail"])
+        if embed_config["image"]:
+            assumed_embed.set_image(url=embed_config["image"])
+        if embed_config["footer"]:
+            assumed_embed.set_footer(text=embed_config["footer"])
+
         try:
-            await user.send(embed=nextcord.Embed(
-                title="Ticket Assumido",
-                description=f"Seu ticket no canal {channel.mention} foi assumido por {interaction.user.mention}.",
-                color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
-            ))
+            await user.send(embed=assumed_embed)
         except nextcord.Forbidden:
             await channel.send(f"Não consegui notificar {user.mention} por DM (bloqueada).")
         await interaction.response.send_message("Ticket assumido!", ephemeral=True)
@@ -225,11 +270,10 @@ class TicketCog(commands.Cog):
             await interaction.response.send_message("Este ticket já está fechado!", ephemeral=True)
             return
 
-        # Responde à interação imediatamente
         await interaction.response.send_message("Ticket será encerrado em 5 segundos...", ephemeral=True)
 
         ticket_data["status"] = "fechado"
-        await interaction.message.edit(view=None)  # Remove os botões
+        await interaction.message.edit(view=None)
         await asyncio.sleep(5)
         await channel.edit(name=f"closed-ticket-{user.name}")
 
@@ -253,12 +297,21 @@ class TicketCog(commands.Cog):
             await interaction.response.send_message("Apenas o atendente responsável pode notificar!", ephemeral=True)
             return
 
+        embed_config = config["embed_inactivity"]
+        inactivity_embed = nextcord.Embed(
+            title=embed_config["title"],
+            description=f"Seu ticket em {channel.mention} está inativo há muito tempo. Responda em até {config['tempo_fechamento_horas'] - config['tempo_notificacao_horas']} horas ou ele será encerrado automaticamente.",
+            color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
+        )
+        if embed_config["thumbnail"]:
+            inactivity_embed.set_thumbnail(url=embed_config["thumbnail"])
+        if embed_config["image"]:
+            inactivity_embed.set_image(url=embed_config["image"])
+        if embed_config["footer"]:
+            inactivity_embed.set_footer(text=embed_config["footer"])
+
         try:
-            await user.send(embed=nextcord.Embed(
-                title="🚨 Aviso de Inatividade",
-                description=f"Seu ticket em {channel.mention} está inativo há muito tempo. Responda em até {config['tempo_fechamento_horas'] - config['tempo_notificacao_horas']} horas ou ele será encerrado automaticamente.",
-                color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
-            ))
+            await user.send(embed=inactivity_embed)
             await channel.send(f"{user.mention} foi notificado sobre a inatividade.")
         except nextcord.Forbidden:
             await channel.send(f"Não consegui notificar {user.mention} por DM (bloqueada).")
@@ -266,7 +319,7 @@ class TicketCog(commands.Cog):
 
     async def monitor_inactivity(self, channel: nextcord.TextChannel, user: nextcord.Member, config: dict, ticket_key: str):
         while ticket_key in self.active_tickets:
-            await asyncio.sleep(3600)  # Verifica a cada hora
+            await asyncio.sleep(3600)
             ticket_data = self.active_tickets.get(ticket_key, {})
             last_activity = ticket_data["last_activity"]
             if (datetime.now(self.br_tz) - last_activity).total_seconds() / 3600 >= config["tempo_notificacao_horas"]:
@@ -281,11 +334,19 @@ class TicketCog(commands.Cog):
                 break
 
     async def request_evaluation(self, user: nextcord.Member, config: dict, ticket_data: dict, channel: nextcord.TextChannel):
+        embed_config = config["embed_evaluation"]
         embed = nextcord.Embed(
-            title="📝 Avalie o Atendimento",
-            description="Como você avalia o atendimento recebido?",
+            title=embed_config["title"],
+            description=embed_config["description"],
             color=nextcord.Color.from_rgb(*config["embed_color_rgb"])
         )
+        if embed_config["thumbnail"]:
+            embed.set_thumbnail(url=embed_config["thumbnail"])
+        if embed_config["image"]:
+            embed.set_image(url=embed_config["image"])
+        if embed_config["footer"]:
+            embed.set_footer(text=embed_config["footer"])
+
         view = ui.View(timeout=None)
         select = ui.Select(
             placeholder="Selecione uma nota...",
@@ -322,6 +383,110 @@ class TicketCog(commands.Cog):
             await user.send(embed=embed, view=view)
         except nextcord.Forbidden:
             await channel.send(f"{user.mention}, avalie o atendimento aqui (DM bloqueada):", embed=embed, view=view)
+
+    # Classe para o Modal de personalização das embeds
+    class PersonalizeEmbedModal(nextcord.ui.Modal):
+        def __init__(self, parent_cog, embed_key):
+            super().__init__(f"Personalizar Embed: {embed_key.replace('embed_', '').capitalize()}")
+            self.parent_cog = parent_cog
+            self.embed_key = embed_key
+            config = self.parent_cog.load_config(str(parent_cog.bot.guilds[0].id))  # Usa o primeiro servidor como padrão inicial
+            embed_config = config[self.embed_key]
+
+            self.embed_title = nextcord.ui.TextInput(
+                label="Título da Embed",
+                default_value=embed_config["title"],
+                required=True,
+                max_length=256
+            )
+            self.add_item(self.embed_title)
+
+            self.embed_description = nextcord.ui.TextInput(
+                label="Descrição da Embed",
+                default_value=embed_config.get("description", ""),
+                required=self.embed_key in ["embed_menu", "embed_evaluation"],
+                max_length=2000,
+                style=nextcord.TextInputStyle.paragraph
+            )
+            self.add_item(self.embed_description)
+
+            self.embed_thumbnail = nextcord.ui.TextInput(
+                label="URL do Thumbnail",
+                default_value=embed_config["thumbnail"],
+                required=False,
+                max_length=500
+            )
+            self.add_item(self.embed_thumbnail)
+
+            self.embed_image = nextcord.ui.TextInput(
+                label="URL da Imagem",
+                default_value=embed_config["image"],
+                required=False,
+                max_length=500
+            )
+            self.add_item(self.embed_image)
+
+            self.embed_footer = nextcord.ui.TextInput(
+                label="Texto do Footer",
+                default_value=embed_config.get("footer", ""),
+                required=False,
+                max_length=2048
+            )
+            self.add_item(self.embed_footer)
+
+        async def callback(self, interaction: Interaction):
+            guild_id = str(interaction.guild.id)
+            config = self.parent_cog.load_config(guild_id)
+
+            config[self.embed_key] = {
+                "title": self.embed_title.value,
+                "description": self.embed_description.value or "",
+                "thumbnail": self.embed_thumbnail.value or "",
+                "image": self.embed_image.value or "",
+                "footer": self.embed_footer.value or ""
+            }
+            self.parent_cog.save_config(guild_id, config)
+
+            await interaction.response.send_message(
+                f"Embed '{self.embed_key.replace('embed_', '').capitalize()}' personalizada com sucesso!",
+                ephemeral=True
+            )
+
+    # Comando /person_tickets
+    @nextcord.slash_command(name="person_tickets", description="Personalize as embeds do sistema de tickets.")
+    @commands.has_permissions(administrator=True)
+    async def person_tickets(self, interaction: Interaction):
+        embed = nextcord.Embed(
+            title="Personalização de Embeds - Tickets",
+            description="Escolha uma embed para personalizar clicando nos botões abaixo:",
+            color=nextcord.Color.from_rgb(43, 45, 49)
+        )
+        embed.add_field(
+            name="Embeds Disponíveis",
+            value=(
+                "1. **Menu**: Embed do menu de tickets.\n"
+                "2. **Painel**: Embed enviada no canal do ticket.\n"
+                "3. **Assumido**: Notificação de ticket assumido (DM).\n"
+                "4. **Inatividade**: Aviso de inatividade (DM).\n"
+                "5. **Avaliação**: Solicitação de avaliação (DM ou canal)."
+            ),
+            inline=False
+        )
+
+        view = ui.View(timeout=None)
+        embeds_to_edit = ["embed_menu", "embed_panel", "embed_assumed", "embed_inactivity", "embed_evaluation"]
+        for embed_key in embeds_to_edit:
+            button = ui.Button(
+                label=embed_key.replace("embed_", "").capitalize(),
+                style=nextcord.ButtonStyle.secondary,
+                emoji="<:add:1350154819419246677>"
+            )
+            async def button_callback(interaction, key=embed_key):
+                await interaction.response.send_modal(self.PersonalizeEmbedModal(self, key))
+            button.callback = button_callback
+            view.add_item(button)
+
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
 
     # Comandos Slash
     @nextcord.slash_command(name="config_tickets", description="Configura o sistema de tickets.")

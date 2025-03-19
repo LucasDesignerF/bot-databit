@@ -153,6 +153,14 @@ class NotifyModal(nextcord.ui.Modal):
 @bot.event
 async def on_ready():
     print(f"Bot conectado como {bot.user}! 🤖")
+    
+    # Define o status fixo ao iniciar o bot
+    status_text = "🛡️ Anti-Raid Ativado"
+    await bot.change_presence(
+        status=nextcord.Status.online,
+        activity=nextcord.CustomActivity(name=status_text)
+    )
+    
     try:
         await bot.sync_application_commands()
         print("Comandos slash sincronizados com sucesso! ✅")
