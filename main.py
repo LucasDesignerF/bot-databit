@@ -4,8 +4,8 @@
 # Created by: CodeProjects
 # Modified by: CodeProjects
 # Date of Modification: 19/03/2025
-# Reason of Modification: Adição de status personalizado com suporte a emojis
-# Version: 1.2
+# Reason of Modification: Ajuste na cor da embed do comando /root_notify
+# Version: 1.6
 # Developer Of Version: CodeProjects and RedeGamer - Serviços Escaláveis para seu Game
 
 import nextcord
@@ -13,6 +13,7 @@ from nextcord.ext import commands
 import os
 import importlib.util
 import re
+import asyncio
 from dotenv import load_dotenv
 
 # Carrega variáveis do .env
@@ -26,27 +27,22 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 # ID do dono (você)
 OWNER_ID = 1219787450583486500
 
-# Função para converter emoji personalizado em formato utilizável
+# Função para processar emoji personalizado para exibição
 def process_emoji(emoji_input: str) -> str:
-    # Regex para detectar emojis personalizados no formato <:nome:ID> ou <a:nome:ID>
     emoji_pattern = r"<a?:[a-zA-Z0-9_]+:\d+>"
     if re.match(emoji_pattern, emoji_input):
-        # Extrai o ID do emoji
-        emoji_id = emoji_input.split(":")[-1][:-1]
-        # Verifica se o emoji existe no cache do bot
-        emoji = nextcord.utils.get(bot.emojis, id=int(emoji_id))
-        if emoji:
-            return str(emoji)  # Retorna o emoji como string utilizável
-        else:
-            return emoji_input  # Retorna o texto original se o emoji não for encontrado
+        return emoji_input
     return emoji_input
+
+# Função para limpar emoji do status (já que CustomActivity não suporta emojis personalizados)
+def clean_status(text: str) -> str:
+    return re.sub(r"<a?:[a-zA-Z0-9_]+:\d+>", "", text).strip()
 
 # Classe para o Modal de configuração de status
 class StatusModal(nextcord.ui.Modal):
     def __init__(self):
         super().__init__("Configurar Status do Bot")
         
-        # Campo para a frase do status
         self.status_text = nextcord.ui.TextInput(
             label="Frase do Status",
             placeholder="Digite a frase que deseja exibir",
@@ -55,7 +51,6 @@ class StatusModal(nextcord.ui.Modal):
         )
         self.add_item(self.status_text)
         
-        # Campo para o tipo de status
         self.status_type = nextcord.ui.TextInput(
             label="Tipo de Status",
             placeholder="Digite: Online, Ausente, Ocupado ou Offline",
@@ -64,7 +59,6 @@ class StatusModal(nextcord.ui.Modal):
         )
         self.add_item(self.status_type)
         
-        # Campo opcional para emoji personalizado
         self.status_emoji = nextcord.ui.TextInput(
             label="Emoji Personalizado (Opcional)",
             placeholder="Ex: <:manutencao:1351925349067522059>",
@@ -78,7 +72,6 @@ class StatusModal(nextcord.ui.Modal):
         status_type_input = self.status_type.value.lower()
         emoji_input = self.status_emoji.value or ""
         
-        # Mapeamento dos tipos de status
         status_map = {
             "online": nextcord.Status.online,
             "ausente": nextcord.Status.idle,
@@ -86,7 +79,6 @@ class StatusModal(nextcord.ui.Modal):
             "offline": nextcord.Status.invisible
         }
         
-        # Verifica se o tipo de status é válido
         if status_type_input not in status_map:
             await interaction.response.send_message(
                 "Tipo de status inválido! Use: Online, Ausente, Ocupado ou Offline",
@@ -94,30 +86,74 @@ class StatusModal(nextcord.ui.Modal):
             )
             return
         
-        # Processa o emoji personalizado, se fornecido
-        final_status = status_text
+        display_status = status_text
+        clean_status_text = status_text
         if emoji_input:
             processed_emoji = process_emoji(emoji_input)
-            final_status = f"{processed_emoji} {status_text}"
+            display_status = f"{processed_emoji} {status_text}"
+            clean_status_text = f"{clean_status(display_status)}"
         
-        # Define o novo status
         status = status_map[status_type_input]
         await bot.change_presence(
             status=status,
-            activity=nextcord.CustomActivity(name=final_status)
+            activity=nextcord.CustomActivity(name=clean_status_text)
         )
         
         await interaction.response.send_message(
-            f"Status atualizado para '{final_status}' com tipo '{status_type_input.capitalize()}'!",
+            f"Status atualizado para '{display_status}' com tipo '{status_type_input.capitalize()}'!\n"
+            f"Nota: Emojis personalizados não aparecem no status, apenas em mensagens. Use emojis Unicode se desejar.",
             ephemeral=True
         )
+
+# Classe para o Modal de notificação
+class NotifyModal(nextcord.ui.Modal):
+    def __init__(self):
+        super().__init__("Notificação para Donos de Servidores")
+        
+        self.notify_text = nextcord.ui.TextInput(
+            label="Texto do Aviso",
+            placeholder="Digite o texto completo da notificação",
+            required=True,
+            max_length=2000,
+            style=nextcord.TextInputStyle.paragraph
+        )
+        self.add_item(self.notify_text)
+
+    async def callback(self, interaction: nextcord.Interaction):
+        notify_text = self.notify_text.value
+        
+        # Cria a embed de notificação com título, thumbnail e footer fixos, e cor personalizada
+        embed = nextcord.Embed(
+            title="<:1786617:1351930958156140644> Notificação de Atualização",
+            description=notify_text,
+            color=nextcord.Color.from_rgb(43, 45, 49)  # Cor RGB (43, 45, 49)
+        )
+        embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/512/5060/5060502.png")
+        embed.set_footer(text="📢 Mensagem de Notificação ADM")
+
+        await interaction.response.send_message(
+            "Iniciando envio de notificações aos donos dos servidores... Isso pode levar um tempo!",
+            ephemeral=True
+        )
+
+        # Envia a embed para cada dono de servidor
+        for guild in bot.guilds:
+            owner = guild.owner
+            if owner:
+                try:
+                    await owner.send(embed=embed)
+                    print(f"Notificação enviada para {owner} do servidor {guild.name}")
+                    await asyncio.sleep(35)  # Atraso de 35 segundos para evitar rate limit
+                except nextcord.Forbidden:
+                    print(f"Não foi possível enviar DM para {owner} do servidor {guild.name} (DMs fechadas)")
+                except Exception as e:
+                    print(f"Erro ao enviar notificação para {owner} do servidor {guild.name}: {e}")
 
 # Evento de inicialização
 @bot.event
 async def on_ready():
     print(f"Bot conectado como {bot.user}! 🤖")
     try:
-        # Sincroniza os slash commands
         await bot.sync_application_commands()
         print("Comandos slash sincronizados com sucesso! ✅")
     except Exception as e:
@@ -129,8 +165,6 @@ async def on_guild_join(guild):
     guild_id = str(guild.id)
     data_dir = "data"
     guild_dir = os.path.join(data_dir, guild_id)
-
-    # Cria a pasta do servidor se ela não existir
     if not os.path.exists(guild_dir):
         os.makedirs(guild_dir)
         print(f"Pasta de dados criada para o servidor: {guild.name} ({guild_id}) 📁")
@@ -146,11 +180,20 @@ async def status_command(interaction: nextcord.Interaction):
             ephemeral=True
         )
         return
-    
-    # Envia o modal
     await interaction.response.send_modal(StatusModal())
 
-# Função para verificar se o arquivo é um cog (tem função setup)
+# Comando /root_notify restrito ao dono
+@bot.slash_command(name="root_notify", description="Envia notificação aos donos de servidores (apenas dono)")
+async def root_notify_command(interaction: nextcord.Interaction):
+    if interaction.user.id != OWNER_ID:
+        await interaction.response.send_message(
+            "Você não tem permissão para usar este comando!",
+            ephemeral=True
+        )
+        return
+    await interaction.response.send_modal(NotifyModal())
+
+# Função para verificar se o arquivo é um cog
 def is_cog(file_path: str) -> bool:
     try:
         spec = importlib.util.spec_from_file_location("module", file_path)
@@ -163,19 +206,18 @@ def is_cog(file_path: str) -> bool:
         print(f"Erro ao verificar se {file_path} é um cog: {str(e)} ❌")
         return False
 
-# Função para carregar cogs dinamicamente em todas as subpastas de cogs/
+# Função para carregar cogs dinamicamente
 def load_cogs():
     cogs_dir = "cogs"
     if not os.path.exists(cogs_dir):
         print(f"Diretório '{cogs_dir}' não encontrado! Criando... 📁")
         os.makedirs(cogs_dir)
         return
-
     for root, _, files in os.walk(cogs_dir):
         for filename in files:
             if filename.endswith(".py") and not filename.startswith("__"):
                 file_path = os.path.join(root, filename)
-                cog_path = file_path.replace(os.sep, ".")[:-3]  # Converte pra formato de módulo
+                cog_path = file_path.replace(os.sep, ".")[:-3]
                 if is_cog(file_path):
                     try:
                         bot.load_extension(cog_path)
