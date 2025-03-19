@@ -61,11 +61,20 @@
             text-align: center;
             padding: 4rem 2rem 2rem;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        header img {
-            width: 150px;
-            margin-bottom: 1rem;
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-title img {
+            width: 60px; /* Tamanho reduzido para alinhar ao texto */
+            height: 60px;
         }
 
         h1 {
@@ -75,7 +84,7 @@
             color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 0.5rem;
+            margin: 0;
         }
 
         header p {
@@ -83,7 +92,7 @@
             font-weight: 300;
             color: var(--secondary-color);
             max-width: 600px;
-            margin: 0 auto;
+            margin-top: 0.5rem;
         }
 
         .content {
@@ -100,8 +109,8 @@
             background: var(--card-bg);
             border-radius: 20px;
             padding: 1.5rem;
-            width: 23%; /* Reduzido para caber 4 cards lado a lado */
-            min-width: 250px; /* Largura mínima para evitar quebra excessiva */
+            width: 23%;
+            min-width: 250px;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
@@ -176,13 +185,14 @@
 
         /* Responsividade */
         @media (max-width: 1024px) {
-            .card { width: 45%; } /* 2 cards por linha em telas médias */
+            .card { width: 45%; }
         }
 
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
+            .header-title img { width: 40px; height: 40px; }
             header p { font-size: 1rem; }
-            .card { width: 100%; } /* Empilha em telas pequenas */
+            .card { width: 100%; }
             .card h2 { font-size: 1.3rem; }
             .card i { font-size: 2rem; }
             .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
@@ -196,8 +206,10 @@
 
     <!-- Header -->
     <header>
-        <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo">
-        <h1>DataBit 🤖</h1>
+        <div class="header-title">
+            <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo">
+            <h1>DataBit</h1>
+        </div>
         <p>Um bot Discord poderoso para gerenciar e proteger sua comunidade</p>
     </header>
 
