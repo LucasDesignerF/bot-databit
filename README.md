@@ -1,136 +1,153 @@
-# DataBit - Sistema de Tickets, Registro e Boas-Vindas 🤖
 
-![GitHub](https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)
-![Nextcord](https://img.shields.io/badge/Nextcord-2.0%2B-blueviolet?style=for-the-badge&logo=discord)
+<p align="center">
+  <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo" width="150"/>
+</p>
 
-O **DataBit** é um bot Discord avançado desenvolvido para gerenciar tickets, registrar novos membros e enviar mensagens de boas-vindas personalizadas. Ele foi criado para ser altamente escalável e personalizável, atendendo às necessidades de servidores de todos os tamanhos.
+<h1 align="center">DataBit 🤖</h1>
+<p align="center">Um bot Discord poderoso para tickets, registros e boas-vindas</p>
 
----
-
-## Recursos Principais 🚀
-
-### 🎟 Sistema de Tickets
-- Criação de tickets por categoria (Suporte Técnico, Compras, Parcerias, etc.).
-- Painel interativo com botões para assumir, notificar e fechar tickets.
-- Fechamento automático de tickets inativos.
-- Avaliação do atendimento após o fechamento do ticket.
-
-### 📝 Sistema de Registro
-- Embed interativa com botão de registro.
-- Atribuição automática de cargos após o registro.
-- Integração com o sistema de boas-vindas.
-
-### 🎉 Sistema de Boas-Vindas
-- Mensagens de boas-vindas personalizadas com imagem gerada dinamicamente.
-- Atribuição automática de cargos iniciais.
-- Mensagem privada enviada ao novo membro.
+<p align="center">
+  <a href="https://github.com/LucasDesignerF/bot-databit/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT"/>
+  </a>
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?style=flat-square&logo=python" alt="Python 3.8+"/>
+  </a>
+  <a href="https://nextcord.readthedocs.io/">
+    <img src="https://img.shields.io/badge/Nextcord-2.0%2B-7289DA?style=flat-square&logo=discord" alt="Nextcord 2.0+"/>
+  </a>
+</p>
 
 ---
 
-## Pré-requisitos 📋
+### 🌟 O que é o DataBit?
 
-- Python 3.8 ou superior.
-- Bibliotecas Python: `nextcord`, `Pillow`, `python-dotenv`, `aiohttp`.
-- Token de um bot Discord válido.
+O **DataBit** é um bot Discord avançado projetado para simplificar a gestão de servidores. Com sistemas integrados de **tickets**, **registro de membros** e **boas-vindas personalizadas**, ele é escalável, personalizável e perfeito para comunidades de qualquer tamanho. Desenvolvido com paixão para oferecer uma experiência fluida e funcional!
 
 ---
 
-## Instalação e Configuração ⚙️
+### ✨ Recursos Principais
 
-### 1. Clone o repositório
-```bash
-git clone https://github.com/LucasDesignerF/bot-databit.git
-cd bot-databit
-```
+#### 🎟 Sistema de Tickets
+- 🗂 Criação de tickets por categorias (Suporte, Compras, Parcerias, etc.).
+- 🖱 Painel interativo com botões para assumir, notificar e encerrar.
+- ⏳ Fechamento automático de tickets inativos.
+- ⭐ Avaliação do atendimento após o encerramento.
 
-### 2. Instale as dependências
-```bash
-pip install -r requirements.txt
-```
+#### 📝 Sistema de Registro
+- 📋 Embed interativa com botão de registro.
+- 🛡 Atribuição automática de cargos ao registrar.
+- 🔗 Integração com o sistema de boas-vindas.
 
-### 3. Configure o arquivo `.env`
-Crie um arquivo `.env` na raiz do projeto e adicione o token do seu bot:
-```env
-DISCORD_TOKEN=seu_token_aqui
-```
-
-### 4. Execute o bot
-```bash
-python main.py
-```
+#### 🎉 Sistema de Boas-Vindas
+- 🖼 Mensagens personalizadas com imagens dinâmicas.
+- 🎭 Atribuição automática de cargos iniciais.
+- ✉️ Mensagem privada de boas-vindas para novos membros.
 
 ---
 
-## Como Usar 🛠️
+### 📋 Pré-requisitos
 
-### Comandos Disponíveis
+- 🐍 **Python 3.8+**
+- 📦 **Dependências**: `nextcord`, `Pillow`, `python-dotenv`, `aiohttp`
+- 🔑 **Token do Discord**: Crie um bot em [Discord Developer Portal](https://discord.com/developers/applications)
 
-#### Sistema de Tickets 🎟
+---
+
+### ⚙️ Instalação
+
+1. **Clone o repositório**  
+   ```bash
+   git clone https://github.com/LucasDesignerF/bot-databit.git
+   cd bot-databit
+   ```
+
+2. **Instale as dependências**  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Configure o `.env`**  
+   Crie um arquivo `.env` na raiz e adicione:  
+   ```env
+   DISCORD_TOKEN=seu_token_aqui
+   ```
+
+4. **Inicie o bot**  
+   ```bash
+   python main.py
+   ```
+
+---
+
+### 🛠 Como Usar
+
+#### 🎟 Comandos de Tickets
 - **`/config_tickets`**: Configura o sistema de tickets.
-- **`/create_ticket_menu`**: Cria o menu de tickets no canal especificado.
+- **`/create_ticket_menu`**: Cria o menu de tickets.
 
-#### Sistema de Registro 📝
+#### 📝 Comandos de Registro
 - **`/config_register`**: Configura o sistema de registro.
-- **`/create_register_embed`**: Cria uma embed com o botão de registro.
+- **`/create_register_embed`**: Gera a embed de registro.
 
-#### Sistema de Boas-Vindas 🎉
-- **`/config_welcome`**: Configura o sistema de boas-vindas.
+#### 🎉 Comandos de Boas-Vindas
+- **`/config_welcome`**: Configura as boas-vindas.
 
 ---
 
-## Estrutura do Projeto 📂
+### 📂 Estrutura do Projeto
 
 ```
-SeuRepositorio/
-├── cogs/
-│   ├── register_cog.py       # Cog para o sistema de registro
-│   ├── ticket_cog.py         # Cog para o sistema de tickets
-│   └── welcome_cog.py        # Cog para o sistema de boas-vindas
-├── data/                     # Pasta para armazenar dados por servidor
-├── fonts/                    # Pasta para armazenar fontes personalizadas
-├── .env                      # Arquivo de configuração do ambiente
-├── main.py                   # Arquivo principal do bot
-└── README.md                 # Este arquivo
+bot-databit/
+├── cogs/                    # Módulos do bot
+│   ├── register_cog.py      # Sistema de registro
+│   ├── ticket_cog.py        # Sistema de tickets
+│   └── welcome_cog.py       # Sistema de boas-vindas
+├── data/                    # Dados salvos por servidor
+├── fonts/                   # Fontes personalizadas
+├── .env                     # Configurações do ambiente
+├── main.py                  # Arquivo principal
+└── README.md                # Documentação
 ```
 
 ---
 
-## Personalização 🎨
+### 🎨 Personalização
 
-### Imagens e Fontes
-- Substitua as imagens de fundo e thumbnails nas URLs dentro dos cogs.
-- Adicione fontes personalizadas na pasta `fonts/` e atualize os caminhos nos cogs.
+#### 🖼 Imagens e Fontes
+- Substitua as URLs de imagens nos cogs por suas próprias.
+- Adicione fontes na pasta `fonts/` e atualize os caminhos.
 
-### Cores e Textos
-- Ajuste as cores das embeds e textos diretamente nos arquivos dos cogs.
-
----
-
-## Contribuição 🤝
-
-Contribuições são bem-vindas! Siga os passos abaixo:
-
-1. Faça um fork do repositório.
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`).
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`).
-4. Faça push para a branch (`git push origin feature/nova-feature`).
-5. Abra um Pull Request.
+#### 🌈 Cores e Textos
+- Edite as cores RGB e textos diretamente nos arquivos dos cogs.
 
 ---
 
-## Licença 📜
+### 🤝 Como Contribuir
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+1. 🍴 Faça um fork do repositório.
+2. 🌿 Crie uma branch (`git checkout -b feature/sua-ideia`).
+3. 💾 Commit suas mudanças (`git commit -m '✨ Adiciona algo incrível'`).
+4. 🚀 Push para a branch (`git push origin feature/sua-ideia`).
+5. 📬 Abra um Pull Request.
 
 ---
 
-## Contato 📞
+### 📜 Licença
+
+Licenciado sob a **[MIT License](LICENSE)**. Veja mais detalhes no arquivo de licença.
+
+---
+
+### 📞 Contato
 
 - **GitHub**: [LucasDesignerF](https://github.com/LucasDesignerF)
-- **Discord**: lrfortes
-- **Email**: ofc.rede@gmail.com
+- **Discord**: `lrfortes`
+- **Email**: [ofc.rede@gmail.com](mailto:ofc.rede@gmail.com)
 
 ---
 
-Feito com ❤️ por **CodeProjects** e **RedeGamer - Serviços Escaláveis para seu Game**.
+<p align="center">
+  Feito com ❤️ por <strong>CodeProjects</strong> e <strong>RedeGamer - Serviços Escaláveis para seu Game</strong>
+</p>
+```
