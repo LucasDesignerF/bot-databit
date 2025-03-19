@@ -7,7 +7,7 @@
 
 <p align="center">
   <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT"/>
+    <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen&cacheSeconds=0" alt="Licença MIT"/>
   </a>
   <a href="https://www.python.org/">
     <img src="https://img.shields.io/badge/Python-3.12.7-3776AB?style=flat-square&logo=python" alt="Python 3.12.7"/>
@@ -18,7 +18,7 @@
   <a href="https://github.com/LucasDesignerF/bot-databit/releases">
     <img src="https://img.shields.io/badge/Version-v1.0.0--alpha-orange?style=flat-square" alt="Versão do DataBit"/>
   </a>
-  <a href="https://github.com/LucasDesignerF/bot-databit/commits/main">
+  <a href="https://github.com/LucasDesignerF/bot-databit/commits/master">
     <img src="https://img.shields.io/github/last-commit/LucasDesignerF/bot-databit?style=flat-square&color=purple" alt="Último Commit"/>
   </a>
   <a href="https://discord.gg/AhcHfUpNeM">
@@ -28,10 +28,10 @@
     <img src="https://img.shields.io/badge/Status-Online-00FF00?style=flat-square" alt="Status do Bot"/>
   </a>
   <a href="https://github.com/LucasDesignerF/bot-databit">
-    <img src="https://img.shields.io/github/languages/top/LucasDesignerF/bot-databit?style=flat-square&color=FFD700" alt="Linguagem Principal"/>
+    <img src="https://img.shields.io/github/repo-size/LucasDesignerF/bot-databit?style=flat-square&color=blue" alt="Tamanho do Repositório"/>
   </a>
-  <a href="https://github.com/LucasDesignerF/bot-databit/releases">
-    <img src="https://img.shields.io/badge/Downloads-0+-blueviolet?style=flat-square" alt="Downloads"/>
+  <a href="https://github.com/LucasDesignerF/bot-databit/stargazers">
+    <img src="https://img.shields.io/github/stars/LucasDesignerF/bot-databit?style=flat-square&color=yellow" alt="Estrelas"/>
   </a>
 </p>
 
