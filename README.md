@@ -6,7 +6,7 @@
 <p align="center">Um bot Discord poderoso para tickets, registros e boas-vindas</p>
 
 <p align="center">
-  <a href="https://github.com/LucasDesignerF/bot-databit/blob/main/LICENSE">
+  <a href="https://github.com/LucasDesignerF/bot-databit/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/LucasDesignerF/bot-databit?style=flat-square&color=brightgreen" alt="Licença MIT"/>
   </a>
   <a href="https://www.python.org/">
