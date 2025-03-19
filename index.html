@@ -16,6 +16,8 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         :root {
@@ -90,17 +92,16 @@
             padding: 2rem;
             z-index: 1;
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.5rem;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 2rem;
-            width: 100%;
-            max-width: 360px;
+            padding: 1.5rem;
+            width: 23%; /* Reduzido para caber 4 cards lado a lado */
+            min-width: 250px; /* Largura mínima para evitar quebra excessiva */
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
@@ -114,18 +115,23 @@
             box-shadow: 0 15px 40px rgba(255, 111, 97, 0.3);
         }
 
-        .card h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
+        .card i {
+            font-size: 2.5rem;
             color: var(--accent-color);
             margin-bottom: 1rem;
         }
 
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+        }
+
         .card p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--secondary-color);
             font-weight: 300;
-            margin-bottom: 1.5rem;
             flex-grow: 1;
         }
 
@@ -142,6 +148,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 2rem 0;
         }
 
         .cta-button:hover {
@@ -168,11 +175,16 @@
         }
 
         /* Responsividade */
+        @media (max-width: 1024px) {
+            .card { width: 45%; } /* 2 cards por linha em telas médias */
+        }
+
         @media (max-width: 768px) {
             h1 { font-size: 2rem; }
             header p { font-size: 1rem; }
-            .card h2 { font-size: 1.5rem; }
-            .card { max-width: 100%; }
+            .card { width: 100%; } /* Empilha em telas pequenas */
+            .card h2 { font-size: 1.3rem; }
+            .card i { font-size: 2rem; }
             .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
             .content { padding: 1rem; gap: 1rem; }
         }
@@ -192,23 +204,27 @@
     <!-- Conteúdo Principal -->
     <div class="content">
         <div class="card">
-            <h2>📝 Registro</h2>
-            <p>Simplifique a entrada de membros com um sistema de registro interativo. Embed personalizável com botão para atribuir cargos automaticamente e integração com boas-vindas.</p>
+            <i class="fas fa-user-check"></i>
+            <h2>Registro</h2>
+            <p>Simplifique a entrada com uma embed personalizável e botão interativo para atribuir cargos automaticamente.</p>
         </div>
 
         <div class="card">
-            <h2>🎟 Tickets</h2>
-            <p>Gerencie suporte com um sistema de tickets avançado. Categorias como Suporte Técnico e Parcerias, painéis interativos, notificações de inatividade e avaliações após o fechamento.</p>
+            <i class="fas fa-ticket-alt"></i>
+            <h2>Tickets</h2>
+            <p>Gerencie suporte com categorias, painéis interativos, notificações e avaliações após o fechamento.</p>
         </div>
 
         <div class="card">
-            <h2>🛡 Anti-Raid</h2>
-            <p>Proteja seu servidor contra raids com monitoramento de mensagens, canais, bans, cargos e convites. Ative lockdowns automáticos e configure limites personalizados.</p>
+            <i class="fas fa-shield-alt"></i>
+            <h2>Anti-Raid</h2>
+            <p>Proteja contra raids com monitoramento e lockdowns automáticos configuráveis.</p>
         </div>
 
         <div class="card">
-            <h2>🎉 Boas-Vindas</h2>
-            <p>Dê as boas-vindas aos novos membros com mensagens personalizadas, imagens dinâmicas com avatares, atribuição de cargos e DMs automáticas.</p>
+            <i class="fas fa-handshake"></i>
+            <h2>Boas-Vindas</h2>
+            <p>Receba novos membros com imagens dinâmicas, cargos automáticos e mensagens privadas.</p>
         </div>
     </div>
 
