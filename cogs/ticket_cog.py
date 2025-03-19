@@ -3,9 +3,9 @@
 # Date of Creation: 20/03/2025
 # Created by: Grok (xAI) & CodeProjects
 # Modified by: Grok (xAI) & CodeProjects
-# Date of Modification: 19/03/2025
-# Reason of Modification: Adição do comando /person_tickets para personalização de embeds
-# Version: 6.1
+# Date of Modification: 20/03/2025
+# Reason of Modification: Deletar canais de tickets fechados após 5 segundos
+# Version: 6.2
 # Developer Of Version: Grok (xAI), CodeProjects, RedeGamer - Serviços Escaláveis para seu Game
 
 import nextcord
@@ -270,11 +270,10 @@ class TicketCog(commands.Cog):
             await interaction.response.send_message("Este ticket já está fechado!", ephemeral=True)
             return
 
-        await interaction.response.send_message("Ticket será encerrado em 5 segundos...", ephemeral=True)
+        await interaction.response.send_message("Ticket será encerrado e deletado em 5 segundos...", ephemeral=True)
 
         ticket_data["status"] = "fechado"
         await interaction.message.edit(view=None)
-        await asyncio.sleep(5)
         await channel.edit(name=f"closed-ticket-{user.name}")
 
         self.save_ticket(str(channel.guild.id), str(channel.id), ticket_data)
@@ -283,13 +282,15 @@ class TicketCog(commands.Cog):
             if logs_channel:
                 await logs_channel.send(embed=nextcord.Embed(
                     title="Ticket Encerrado",
-                    description=f"**Usuário:** {user.mention}\n**Categoria:** {self.ticket_categories[ticket_data['category']]['name']}\n**Canal:** {channel.mention}",
+                    description=f"**Usuário:** {user.mention}\n**Categoria:** {self.ticket_categories[ticket_data['category']]['name']}\n**Canal:** {channel.name} (deletado em breve)",
                     color=nextcord.Color.from_rgb(*config["embed_color_rgb"]),
                     timestamp=datetime.now(self.br_tz)
                 ))
 
         await self.request_evaluation(user, config, ticket_data, channel)
         del self.active_tickets[ticket_key]
+        await asyncio.sleep(5)  # Aguarda 5 segundos antes de deletar
+        await channel.delete()
 
     async def notify_inactivity(self, interaction: Interaction, channel, user, config, ticket_key, embed, view):
         ticket_data = self.active_tickets[ticket_key]
@@ -325,12 +326,23 @@ class TicketCog(commands.Cog):
             if (datetime.now(self.br_tz) - last_activity).total_seconds() / 3600 >= config["tempo_notificacao_horas"]:
                 await channel.send(f"{user.mention}, seu ticket está inativo há {config['tempo_notificacao_horas']} horas. Responda ou ele será fechado em breve!")
             if (datetime.now(self.br_tz) - last_activity).total_seconds() / 3600 >= config["tempo_fechamento_horas"]:
-                await channel.send("Ticket fechado automaticamente por inatividade.")
+                await channel.send("Ticket fechado automaticamente por inatividade e será deletado em 5 segundos.")
                 ticket_data["status"] = "fechado"
                 await channel.edit(name=f"closed-ticket-{user.name}")
                 self.save_ticket(str(channel.guild.id), str(channel.id), ticket_data)
+                if config["canal_logs"]:
+                    logs_channel = self.bot.get_channel(config["canal_logs"])
+                    if logs_channel:
+                        await logs_channel.send(embed=nextcord.Embed(
+                            title="Ticket Encerrado por Inatividade",
+                            description=f"**Usuário:** {user.mention}\n**Categoria:** {self.ticket_categories[ticket_data['category']]['name']}\n**Canal:** {channel.name} (deletado em breve)",
+                            color=nextcord.Color.from_rgb(*config["embed_color_rgb"]),
+                            timestamp=datetime.now(self.br_tz)
+                        ))
                 await self.request_evaluation(user, config, ticket_data, channel)
                 del self.active_tickets[ticket_key]
+                await asyncio.sleep(5)  # Aguarda 5 segundos antes de deletar
+                await channel.delete()
                 break
 
     async def request_evaluation(self, user: nextcord.Member, config: dict, ticket_data: dict, channel: nextcord.TextChannel):
