@@ -22,12 +22,22 @@
     <link rel="icon" href="https://i.imgur.com/FI0J8Aw.png" type="image/png">
     <link rel="apple-touch-icon" href="https://i.imgur.com/FI0J8Aw.png">
     <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style">
     <title>DataBit - Bot Discord Gratuito e Poderoso</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX'); // Substitua 'G-XXXXXXXXXX' pelo seu ID do Google Analytics
+    </script>
 
     <style>
         :root {
@@ -40,7 +50,7 @@
             --gradient-bg: linear-gradient(135deg, #16213e, #2a3a6b);
         }
 
-        * {
+        *, *:before, *:after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -254,7 +264,6 @@
             letter-spacing: 1px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin: 2rem auto;
-            display: block;
             width: fit-content;
             animation: pulse 2s infinite;
         }
@@ -343,10 +352,16 @@
             font-size: 1rem;
             cursor: pointer;
             transition: transform 0.3s ease;
+            position: relative;
         }
 
         .contact button:hover, .contact button:focus {
             transform: scale(1.05);
+        }
+
+        .contact button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .form-message {
@@ -427,10 +442,7 @@
         }
 
         @media (max-width: 768px) {
-            .hamburger {
-                display: block;
-            }
-
+            .hamburger { display: block; }
             .nav-menu {
                 display: none;
                 position: absolute;
@@ -442,15 +454,8 @@
                 padding: 1rem;
                 box-shadow: var(--shadow);
             }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
+            .nav-menu.active { display: flex; }
+            nav ul li { margin: 0.5rem 0; }
             h1 { font-size: 2.2rem; }
             header p { font-size: 1rem; }
             .header-title img { width: 50px; height: 50px; }
@@ -510,6 +515,32 @@
         }
     }
     </script>
+
+    <!-- Sitemap.xml Example (Hospedar no servidor) -->
+    <!--
+    <?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+            <loc>https://codeprojects.discloud.app/</loc>
+            <lastmod>2025-04-19</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>1.0</priority>
+        </url>
+        <url>
+            <loc>https://codeprojects.discloud.app/#features</loc>
+            <lastmod>2025-04-19</lastmod>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+        </url>
+    </urlset>
+    -->
+
+    <!-- Robots.txt Example (Hospedar no servidor) -->
+    <!--
+    User-agent: *
+    Allow: /
+    Sitemap: https://codeprojects.discloud.app/sitemap.xml
+    -->
 </head>
 <body>
     <!-- Background 3D -->
@@ -518,7 +549,7 @@
     <!-- Navigation -->
     <nav role="navigation" aria-label="Menu principal">
         <div class="logo">
-            <img src="https://i.imgur.com/FI0J8Aw.png" alt="Logo do DataBit" loading="lazy">
+            <img src="https://i.imgur.com/FI0J8Aw.png" srcset="https://i.imgur.com/FI0J8Aw.png 1x, https://i.imgur.com/FI0J8Aw.png 2x" alt="Logo do DataBit" loading="lazy">
         </div>
         <button class="hamburger" aria-label="Abrir menu" aria-expanded="false">
             <i class="fas fa-bars"></i>
@@ -526,7 +557,7 @@
         <ul class="nav-menu">
             <li><a href="#home" aria-label="Página inicial">Início</a></li>
             <li><a href="#features" aria-label="Funcionalidades do DataBit">Funcionalidades</a></li>
-            <li><a href="https://github.com/LucasDesignerF/bot-databit/blob/master/README.md" target="_blank" aria-label="Documentação do DataBit">Documentação</a></li>
+            <li><a href="https://docs.codeprojects.discloud.app/" target="_blank" aria-label="Documentação do DataBit">Documentação</a></li>
             <li><a href="https://discord.gg/AhcHfUpNeM" target="_blank" aria-label="Servidor de suporte do DataBit">Suporte</a></li>
         </ul>
     </nav>
@@ -534,7 +565,7 @@
     <!-- Header -->
     <header id="home">
         <div class="header-title">
-            <img src="https://i.imgur.com/FI0J8Aw.png" alt="Logo do DataBit" loading="lazy">
+            <img src="https://i.imgur.com/FI0J8Aw.png" srcset="https://i.imgur.com/FI0J8Aw.png 1x, https://i.imgur.com/FI0J8Aw.png 2x" alt="Logo do DataBit" loading="lazy">
             <h1>DataBit</h1>
         </div>
         <p>Um bot Discord poderoso e gratuito para gerenciar e proteger sua comunidade com facilidade.</p>
@@ -593,16 +624,16 @@
             <h2>O que dizem sobre nós</h2>
             <div class="content">
                 <div class="testimonial-card">
-                    <p>"DataBit transformou a forma como gerenciamos nosso servidor. Os tickets são incríveis!"</p>
-                    <h3>- João, Moderador</h3>
+                    <p>"O sistema de tickets do DataBit é incrivelmente intuitivo e facilita muito a moderação do servidor!"</p>
+                    <h3>- Cailir, Moderador</h3>
                 </div>
                 <div class="testimonial-card">
-                    <p>"A proteção anti-raid salvou nossa comunidade de ataques. Recomendo fortemente!"</p>
-                    <h3>- Maria, Admin</h3>
+                    <p>"Como criador do DataBit, vejo o impacto que ele tem nas comunidades. É um projeto que amo liderar!"</p>
+                    <h3>- Lucas, Admin e Dono</h3>
                 </div>
                 <div class="testimonial-card">
-                    <p>"Fácil de configurar e totalmente gratuito. Melhor bot que já usei!"</p>
-                    <h3>- Pedro, Dono de Servidor</h3>
+                    <p>"A proteção anti-raid e as boas-vindas personalizadas elevaram nosso servidor a outro nível."</p>
+                    <h3>- Ana, Membro da Comunidade</h3>
                 </div>
             </div>
         </section>
@@ -653,7 +684,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('canvas-bg').appendChild(renderer.domElement);
 
-            const particlesCount = window.innerWidth < 768 ? 500 : 1000;
+            const particlesCount = window.innerWidth < 768 ? 400 : 1000;
             const particlesGeometry = new THREE.BufferGeometry();
             const posArray = new Float32Array(particlesCount * 3);
 
@@ -689,6 +720,7 @@
             }
             animate();
 
+            // Resize Handler
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
@@ -711,14 +743,20 @@
                 link.addEventListener('click', () => {
                     navMenu.classList.remove('active');
                     hamburger.setAttribute('aria-expanded', 'false');
-                    hamburger.innerHTML = '<i class="fas fa-bars"></员
+                    hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
 
             // Contact Form Webhook Submission
             const form = document.getElementById('contact-form');
             const formMessage = document.getElementById('form-message');
+            const submitButton = form.querySelector('button');
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                submitButton.disabled = true;
+                submitButton.textContent = 'Enviando...';
+
                 const formData = new FormData(form);
                 const name = formData.get('name');
                 const email = formData.get('email');
@@ -754,6 +792,9 @@
                 } catch (error) {
                     formMessage.className = 'form-message error';
                     formMessage.textContent = 'Erro ao enviar a mensagem. Tente novamente.';
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Enviar';
                 }
 
                 setTimeout(() => {
@@ -775,7 +816,10 @@
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
             });
 
-            // Close Menu on Outside Click
+            // Close Menu on Outside Click and Touch Support
+            let touchStartX = 0;
+            let touchEndX = 0;
+
             document.addEventListener('click', (e) => {
                 if (!nav.contains(e.target) && navMenu.classList.contains('active')) {
                     navMenu.classList.remove('active');
@@ -783,10 +827,6 @@
                     hamburger.innerHTML = '<i class="fas fa-bars"></i>';
                 }
             });
-
-            // Touch Support for Mobile
-            let touchStartX = 0;
-            let touchEndX = 0;
 
             document.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
@@ -802,5 +842,15 @@
             });
         });
     </script>
+
+    <!-- Performance Recommendations -->
+    <!--
+    Para otimizar ainda mais no Google PageSpeed Insights:
+    1. Comprimir a imagem https://i.imgur.com/FI0J8Aw.png com TinyPNG (reduzir para <50KB).
+    2. Hospedar fontes localmente em vez de usar Google Fonts.
+    3. Minificar CSS e JavaScript externamente com ferramentas como UglifyJS ou CSSNano.
+    4. Usar CDN para Three.js com versão mais recente, se disponível.
+    5. Testar com https://pagespeed.web.dev/ após implementar as mudanças.
+    -->
 </body>
 </html>
