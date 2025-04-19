@@ -8,6 +8,7 @@
     <meta name="author" content="LucasDesignerF, CodeProjects, RedeGamer">
     <meta name="robots" content="index, follow">
     <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#16213e">
     <link rel="canonical" href="https://codeprojects.discloud.app/">
     <meta property="og:title" content="DataBit - Bot Discord Gratuito e Poderoso">
     <meta property="og:description" content="Adicione o DataBit ao seu servidor Discord! Gerencie tickets, registros, boas-vindas e proteja contra raids. Gratuito e open-source!">
@@ -78,6 +79,11 @@
             align-items: center;
             z-index: 1000;
             box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        nav.hidden {
+            transform: translateY(-100%);
         }
 
         nav .logo img {
@@ -98,13 +104,26 @@
             transition: color 0.3s ease;
         }
 
-        nav ul li a:hover {
+        nav ul li a:hover, nav ul li a:focus {
             color: var(--accent-color);
+        }
+
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-menu {
+            display: flex;
         }
 
         header {
             text-align: center;
-            padding: 6rem 2rem 3rem;
+            padding: 6rem 1rem 3rem;
             z-index: 1;
             animation: fadeIn 1s ease-in;
         }
@@ -112,13 +131,13 @@
         .header-title {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
             justify-content: center;
         }
 
         .header-title img {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             transition: transform 0.3s ease;
         }
 
@@ -128,20 +147,20 @@
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 700;
             color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin: 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         header p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 300;
             color: var(--secondary-color);
-            max-width: 700px;
+            max-width: 600px;
             margin: 1rem auto;
             line-height: 1.6;
         }
@@ -149,25 +168,25 @@
         main {
             max-width: 1400px;
             width: 100%;
-            padding: 2rem;
+            padding: 1.5rem;
             z-index: 1;
         }
 
         .content {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             animation: slideUp 1s ease-in;
         }
 
         .card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
+            border-radius: 15px;
+            padding: 1.5rem;
             width: 22%;
-            min-width: 280px;
+            min-width: 260px;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid var(--accent-color);
@@ -192,14 +211,14 @@
         }
 
         .card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 20px 50px rgba(255, 111, 97, 0.4);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(255, 111, 97, 0.4);
         }
 
         .card i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--accent-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             transition: transform 0.3s ease;
         }
 
@@ -209,13 +228,13 @@
 
         .card h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             color: var(--accent-color);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
         .card p {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--secondary-color);
             font-weight: 300;
             line-height: 1.5;
@@ -223,119 +242,117 @@
 
         .cta-button {
             display: inline-block;
-            padding: 1.2rem 4rem;
+            padding: 1rem 3rem;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             background: var(--accent-color);
             color: var(--bg-color);
             border-radius: 50px;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 3rem auto;
+            margin: 2rem auto;
             display: block;
             width: fit-content;
             animation: pulse 2s infinite;
         }
 
-        .cta-button:hover {
+        .cta-button:hover, .cta-button:focus {
             transform: scale(1.1);
             box-shadow: 0 10px 20px rgba(255, 111, 97, 0.6);
         }
 
         .stats-section, .testimonials, .faq, .contact {
-            margin: 4rem 0;
-            padding: 2rem;
+            margin: 3rem 0;
+            padding: 1.5rem;
             text-align: center;
         }
 
         .stats-section h2, .testimonials h2, .faq h2, .contact h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--accent-color);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .stats-grid {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.5rem;
             flex-wrap: wrap;
         }
 
         .stat-card {
             background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 15px;
-            width: 200px;
+            padding: 1rem;
+            border-radius: 10px;
+            width: 180px;
             box-shadow: var(--shadow);
         }
 
         .stat-card h3 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--accent-color);
             margin-bottom: 0.5rem;
         }
 
         .testimonial-card {
             background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 15px;
+            padding: 1rem;
+            border-radius: 10px;
             width: 30%;
-            min-width: 280px;
+            min-width: 260px;
             box-shadow: var(--shadow);
-            margin: 1rem;
+            margin: 1rem auto;
         }
 
         .faq-item {
             background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin: 1rem 0;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem auto;
+            max-width: 700px;
         }
 
         .contact form {
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
         .contact input, .contact textarea {
-            padding: 1rem;
-            border-radius: 10px;
+            padding: 0.8rem;
+            border-radius: 8px;
             border: 1px solid var(--accent-color);
             background: var(--card-bg);
             color: var(--text-color);
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .contact button {
-            padding: 1rem;
+            padding: 0.8rem;
             background: var(--accent-color);
             color: var(--bg-color);
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: transform 0.3s ease;
         }
 
-        .contact button:hover {
+        .contact button:hover, .contact button:focus {
             transform: scale(1.05);
         }
 
         footer {
             text-align: center;
-            padding: 3rem 2rem;
-            font-size: 1.1rem;
+            padding: 2rem 1rem;
+            font-size: 1rem;
             color: var(--secondary-color);
             background: rgba(22, 33, 62, 0.9);
             width: 100%;
@@ -349,7 +366,7 @@
             transition: color 0.3s ease;
         }
 
-        footer a:hover {
+        footer a:hover, footer a:focus {
             color: #ff877b;
         }
 
@@ -369,6 +386,14 @@
             50% { transform: scale(1.05); }
         }
 
+        /* Acessibilidade: Reduzir animações */
+        @media (prefers-reduced-motion: reduce) {
+            *, *:before, *:after {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
         /* Responsividade */
         @media (max-width: 1200px) {
             .card { width: 30%; }
@@ -376,27 +401,63 @@
         }
 
         @media (max-width: 992px) {
-            nav ul { gap: 1rem; }
-            h1 { font-size: 2.8rem; }
-            .header-title img { width: 60px; height: 60px; }
             .card { width: 45%; }
             .testimonial-card { width: 100%; }
         }
 
         @media (max-width: 768px) {
-            nav { flex-direction: column; gap: 1rem; }
+            .hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(22, 33, 62, 0.95);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
             h1 { font-size: 2.2rem; }
-            header p { font-size: 1.1rem; }
+            header p { font-size: 1rem; }
+            .header-title img { width: 50px; height: 50px; }
             .card { width: 100%; }
-            .cta-button { padding: 1rem 3rem; font-size: 1.2rem; }
+            .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
             .content { padding: 1rem; gap: 1rem; }
-            .stats-section h2, .testimonials h2, .faq h2, .contact h2 { font-size: 2rem; }
+            .stats-section h2, .testimonials h2, .faq h2, .contact h2 { font-size: 1.8rem; }
+            .stats-grid { gap: 1rem; }
+            .stat-card { width: 160px; }
         }
 
         @media (max-width: 576px) {
-            .header-title img { width: 50px; height: 50px; }
-            .card h2 { font-size: 1.4rem; }
-            .card i { font-size: 2.5rem; }
+            h1 { font-size: 1.8rem; }
+            header p { font-size: 0.9rem; }
+            .header-title img { width: 40px; height: 40px; }
+            .card h2 { font-size: 1.3rem; }
+            .card i { font-size: 2rem; }
+            .card p { font-size: 0.85rem; }
+            .stats-section h2, .testimonials h2, .faq h2, .contact h2 { font-size: 1.6rem; }
+            .contact input, .contact textarea { font-size: 0.85rem; }
+            .contact button { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            nav { padding: 0.8rem 1rem; }
+            .hamburger { font-size: 1.5rem; }
+            .stats-grid { flex-direction: column; align-items: center; }
+            .stat-card { width: 100%; max-width: 200px; }
         }
     </style>
 
@@ -438,7 +499,10 @@
         <div class="logo">
             <img src="https://i.imgur.com/FI0J8Aw.png" alt="Logo do DataBit" loading="lazy">
         </div>
-        <ul>
+        <button class="hamburger" aria-label="Abrir menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu">
             <li><a href="#home" aria-label="Página inicial">Início</a></li>
             <li><a href="#features" aria-label="Funcionalidades do DataBit">Funcionalidades</a></li>
             <li><a href="https://docs.codeprojects.discloud.app/" target="_blank" aria-label="Documentação do DataBit">Documentação</a></li>
@@ -489,11 +553,11 @@
             <h2>Nosso Impacto</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>10K+</h3>
+                    <h3>100+</h3>
                     <p>Servidores Ativos</p>
                 </div>
                 <div class="stat-card">
-                    <h3>500K+</h3>
+                    <h3>2,1K+</h3>
                     <p>Usuários Impactados</p>
                 </div>
                 <div class="stat-card">
@@ -560,14 +624,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Three.js Setup
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('canvas-bg').appendChild(renderer.domElement);
 
+            const particlesCount = window.innerWidth < 768 ? 500 : 1000;
             const particlesGeometry = new THREE.BufferGeometry();
-            const particlesCount = 1000;
             const posArray = new Float32Array(particlesCount * 3);
 
             for (let i = 0; i < particlesCount * 3; i++) {
@@ -576,7 +641,7 @@
 
             particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
             const particlesMaterial = new THREE.PointsMaterial({
-                size: 0.2,
+                size: window.innerWidth < 768 ? 0.15 : 0.2,
                 color: 0xff6f61,
                 transparent: true,
                 opacity: 0.7,
@@ -606,6 +671,66 @@
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Hamburger Menu
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('.nav-menu');
+            const navLinks = navMenu.querySelectorAll('a');
+
+            hamburger.addEventListener('click', () => {
+                const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+                hamburger.setAttribute('aria-expanded', !isExpanded);
+                navMenu.classList.toggle('active');
+                hamburger.innerHTML = isExpanded ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+
+            // Hide Nav on Scroll
+            let lastScrollTop = 0;
+            const nav = document.querySelector('nav');
+
+            window.addEventListener('scroll', () => {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop) {
+                    nav.classList.add('hidden');
+                } else {
+                    nav.classList.remove('hidden');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+
+            // Close Menu on Outside Click
+            document.addEventListener('click', (e) => {
+                if (!nav.contains(e.target) && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+
+            // Touch Support for Mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            document.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            document.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50 && navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                    hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             });
         });
     </script>
