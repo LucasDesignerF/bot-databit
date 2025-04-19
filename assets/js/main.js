@@ -162,4 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburger.innerHTML = '<i class="fas fa-bars"></i>';
         }
     });
+
+    // Highlight Card Animation
+    const highlightCard = document.querySelector('.highlight-card');
+    if (highlightCard) {
+        highlightCard.classList.add('highlightFade');
+    }
 });

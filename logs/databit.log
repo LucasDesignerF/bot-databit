@@ -1,0 +1,172 @@
+2025-04-19 14:44:59,068 - DataBit - INFO - Diret�rio 'cogs' criado ou j� existente
+2025-04-19 14:45:02,596 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 14:45:02,602 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 14:45:02,632 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 14:45:02,744 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 14:45:05,594 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 14:46:25,012 - DataBit - ERROR - Erro ao sincronizar comandos: object of type 'NoneType' has no len()
+2025-04-19 14:46:51,032 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 14:46:51,138 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 14:46:51,143 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 14:46:51,147 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 14:46:51,188 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 14:46:54,300 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 14:46:54,303 - DataBit - INFO - Status inicial aplicado: 🛡️ Anti-Raid Ativado
+2025-04-19 14:47:54,227 - DataBit - ERROR - Erro ao sincronizar comandos: object of type 'NoneType' has no len()
+2025-04-19 14:48:03,111 - DataBit - INFO - Status atualizado por lrfortes: 🛡️ teste (ausente)
+2025-04-19 14:56:57,738 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 14:56:57,850 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 14:56:57,855 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 14:56:57,858 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 14:56:57,906 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 14:57:00,696 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 14:57:00,697 - DataBit - ERROR - Erro ao aplicar status para servidor 1350065683685183579: Client.change_presence() got an unexpected keyword argument 'guild_id'
+2025-04-19 14:57:00,697 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 14:57:00,697 - DataBit - ERROR - Erro ao sincronizar comandos: 'Bot' object has no attribute 'tree'
+2025-04-19 15:01:10,445 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:01:10,558 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:01:10,558 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:01:10,558 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:01:10,619 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:01:13,440 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:01:13,440 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:02:33,191 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 15:05:47,177 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:05:47,276 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:05:47,280 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:05:47,285 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:05:47,358 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:05:50,225 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:05:50,226 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:07:10,372 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 15:11:37,660 - DataBit.WelcomeCog - INFO - Configuração salva para servidor 1350065683685183579
+2025-04-19 15:11:37,970 - DataBit.WelcomeCog - INFO - Configuração de boas-vindas atualizada por 1219787450583486500 em 1350065683685183579
+2025-04-19 15:13:21,509 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 15:13:22,037 - DataBit.WelcomeCog - ERROR - Erro ao processar fundo para 1350065683685183579: Erro ao baixar fundo: 429
+2025-04-19 15:13:22,037 - DataBit.WelcomeCog - ERROR - Erro ao criar/enviar imagem de boas-vindas para 1353167675349532782 em 1350065683685183579: Erro ao baixar fundo: 429
+2025-04-19 15:13:24,074 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 15:19:05,453 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:19:05,547 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:19:05,563 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:19:05,563 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:19:05,727 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:19:08,494 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:19:08,494 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:20:09,599 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:20:09,708 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:20:09,712 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:20:09,716 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:20:09,855 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:20:12,650 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:20:12,650 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:20:36,991 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:20:37,085 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:20:37,085 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:20:37,085 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:20:37,367 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:20:40,196 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:20:40,196 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:22:00,156 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 15:26:25,862 - DataBit.WelcomeCog - INFO - Imagem de fundo carregada para 1350065683685183579: data\1350065683685183579\backgrounds\a2204135e421600f25174c092c41aac8.png
+2025-04-19 15:26:25,864 - DataBit.WelcomeCog - INFO - Configuração salva para servidor 1350065683685183579
+2025-04-19 15:26:26,157 - DataBit.WelcomeCog - INFO - Configuração de boas-vindas atualizada por 1219787450583486500 em 1350065683685183579
+2025-04-19 15:27:23,870 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:27:23,975 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:27:23,979 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:27:23,984 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:27:24,138 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:27:26,955 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:27:26,956 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:27:41,697 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 15:27:41,699 - DataBit.WelcomeCog - ERROR - Erro na tentativa 1/3 para local://a2204135e421600f25174c092c41aac8.png: local://a2204135e421600f25174c092c41aac8.png
+2025-04-19 15:27:41,699 - DataBit.WelcomeCog - ERROR - Erro na tentativa 2/3 para local://a2204135e421600f25174c092c41aac8.png: local://a2204135e421600f25174c092c41aac8.png
+2025-04-19 15:27:41,700 - DataBit.WelcomeCog - ERROR - Erro na tentativa 3/3 para local://a2204135e421600f25174c092c41aac8.png: local://a2204135e421600f25174c092c41aac8.png
+2025-04-19 15:27:41,701 - DataBit.WelcomeCog - ERROR - Erro ao baixar fundo local://a2204135e421600f25174c092c41aac8.png: local://a2204135e421600f25174c092c41aac8.png
+2025-04-19 15:27:42,778 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 15:27:44,404 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 15:28:46,621 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 15:38:14,917 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:38:15,021 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:38:15,025 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:38:15,029 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:38:15,215 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:38:17,995 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:38:17,996 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:39:37,754 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 15:39:48,550 - DataBit.WelcomeCog - INFO - Configuração salva para servidor 1350065683685183579
+2025-04-19 15:39:48,930 - DataBit.WelcomeCog - INFO - Configuração de boas-vindas atualizada por 1219787450583486500 em 1350065683685183579
+2025-04-19 15:41:35,012 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 15:41:35,014 - DataBit.WelcomeCog - INFO - Configuração salva para servidor 1350065683685183579
+2025-04-19 15:41:35,342 - DataBit.WelcomeCog - INFO - Configuração de boas-vindas atualizada por 1219787450583486500 em 1350065683685183579
+2025-04-19 15:42:02,698 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 15:42:04,299 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 15:42:05,120 - DataBit.WelcomeCog - INFO - Imagem de fundo baixada e salva: https://imgur.com/Gad2m7e.png -> data\1350065683685183579\backgrounds\bd8d1820c0c2bf1542f704d68d5c3f74.png
+2025-04-19 15:42:06,286 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 15:42:08,412 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 15:46:53,714 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 15:46:53,829 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 15:46:53,835 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 15:46:53,838 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 15:46:54,029 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 15:46:56,825 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 15:46:56,825 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 15:48:16,631 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 16:47:29,751 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 16:47:31,487 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 16:47:31,487 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 16:47:31,487 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 16:47:31,763 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 16:47:34,534 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 16:47:34,534 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 16:47:58,094 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 16:47:59,758 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 16:48:01,089 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:48:02,603 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:48:54,510 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 16:49:15,192 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 16:49:15,305 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 16:49:15,309 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 16:49:15,313 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 16:49:15,457 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 16:49:18,227 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 16:49:18,227 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 16:49:24,118 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 16:49:26,176 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 16:49:26,335 - DataBit.WelcomeCog - WARNING - Bloco de avatar e texto muito grande (235px) para a imagem (225px). Reduzindo linhas.
+2025-04-19 16:49:27,049 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:49:28,556 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:49:59,127 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 16:49:59,235 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 16:49:59,235 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 16:49:59,235 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 16:49:59,387 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 16:50:02,151 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 16:50:02,174 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 16:50:14,697 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 16:50:16,313 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 16:50:17,271 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:50:18,740 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:51:00,471 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 16:51:00,653 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 16:51:00,666 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 16:51:00,674 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 16:51:00,878 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 16:51:03,747 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 16:51:03,747 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 16:51:39,190 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 16:51:40,814 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 16:51:41,783 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:51:43,228 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:52:23,450 - DataBit - INFO - Comandos slash sincronizados com sucesso
+2025-04-19 16:59:08,199 - DataBit - INFO - Diretório 'cogs' criado ou já existente
+2025-04-19 16:59:08,309 - DataBit - INFO - Carregado cog: cogs.antiraid_cog
+2025-04-19 16:59:08,313 - DataBit - INFO - Carregado cog: cogs.register_cog
+2025-04-19 16:59:08,317 - DataBit - INFO - Carregado cog: cogs.ticket_cog
+2025-04-19 16:59:08,505 - DataBit - INFO - Carregado cog: cogs.welcome_cog
+2025-04-19 16:59:11,344 - DataBit - INFO - Bot conectado como testes#5286!
+2025-04-19 16:59:11,344 - DataBit - INFO - Status global aplicado: 🛡️ Anti-Raid Ativado (online)
+2025-04-19 16:59:22,007 - DataBit.WelcomeCog - INFO - Cargo 1350071989515190282 atribuído a 1353167675349532782 em 1350065683685183579
+2025-04-19 16:59:23,657 - DataBit.WelcomeCog - ERROR - Erro ao resolver URL do Imgur https://imgur.com/Gad2m7e.png: 'utf-8' codec can't decode byte 0x89 in position 0: invalid start byte
+2025-04-19 16:59:24,380 - DataBit.WelcomeCog - INFO - Imagem de boas-vindas enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 16:59:27,167 - DataBit.WelcomeCog - INFO - DM enviada para 1353167675349532782 em 1350065683685183579
+2025-04-19 17:00:30,847 - DataBit - INFO - Comandos slash sincronizados com sucesso
