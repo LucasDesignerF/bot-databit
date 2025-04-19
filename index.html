@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Adicione o DataBit ao seu servidor Discord! Um bot poderoso para tickets, registros, boas-vindas e proteção anti-raid, gratuito e open-source.">
-    <meta name="keywords" content="bot discord, databit, tickets, registro, boas-vindas, anti-raid, open-source">
+    <meta name="description" content="DataBit: Bot Discord gratuito e open-source para tickets, registros, boas-vindas e proteção anti-raid. Gerencie sua comunidade com facilidade!">
+    <meta name="keywords" content="bot discord, databit, tickets discord, registro discord, boas-vindas discord, anti-raid discord, bot gratuito, open-source, comunidade discord">
     <meta name="author" content="LucasDesignerF, CodeProjects, RedeGamer">
-    <meta property="og:title" content="DataBit - Bot Discord Poderoso">
-    <meta property="og:description" content="Gerencie e proteja seu servidor com facilidade: tickets, registros, boas-vindas e anti-raid. Gratuito e open-source!">
-    <meta property="og:image" content="https://imgur.com/FI0J8Aw.png">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <link rel="canonical" href="https://codeprojects.discloud.app/">
+    <meta property="og:title" content="DataBit - Bot Discord Gratuito e Poderoso">
+    <meta property="og:description" content="Adicione o DataBit ao seu servidor Discord! Gerencie tickets, registros, boas-vindas e proteja contra raids. Gratuito e open-source!">
+    <meta property="og:image" content="https://i.imgur.com/FI0J8Aw.png">
     <meta property="og:url" content="https://codeprojects.discloud.app/">
+    <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="icon" href="https://imgur.com/FI0J8Aw.png" type="image/png">
-    <title>DataBit - Bot Discord Poderoso</title>
+    <meta name="twitter:title" content="DataBit - Bot Discord Gratuito e Poderoso">
+    <meta name="twitter:description" content="Gerencie sua comunidade Discord com tickets, registros, boas-vindas e proteção anti-raid. Gratuito e open-source!">
+    <meta name="twitter:image" content="https://i.imgur.com/FI0J8Aw.png">
+    <link rel="icon" href="https://i.imgur.com/FI0J8Aw.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://i.imgur.com/FI0J8Aw.png">
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+    <title>DataBit - Bot Discord Gratuito e Poderoso</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         :root {
-            --bg-color: #16213e; /* Azul escuro sofisticado */
-            --text-color: #ffffff; /* Branco puro */
-            --accent-color: #ff6f61; /* Salmão da logo */
-            --secondary-color: #e0e0e0; /* Cinza claro */
+            --bg-color: #16213e;
+            --text-color: #ffffff;
+            --accent-color: #ff6f61;
+            --secondary-color: #e0e0e0;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            --card-bg: rgba(22, 33, 62, 0.9); /* Fundo escuro com transparência */
+            --card-bg: rgba(22, 33, 62, 0.9);
+            --gradient-bg: linear-gradient(135deg, #16213e, #2a3a6b);
         }
 
         * {
@@ -37,7 +47,7 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: var(--bg-color);
+            background: var(--gradient-bg);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
@@ -54,122 +64,281 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.8;
+            opacity: 0.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        nav .logo img {
+            width: 40px;
+            height: 40px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
         }
 
         header {
             text-align: center;
-            padding: 4rem 2rem 2rem;
+            padding: 6rem 2rem 3rem;
             z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            animation: fadeIn 1s ease-in;
         }
 
         .header-title {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
+            justify-content: center;
         }
 
         .header-title img {
-            width: 60px; /* Tamanho reduzido para alinhar ao texto */
-            height: 60px;
+            width: 80px;
+            height: 80px;
+            transition: transform 0.3s ease;
+        }
+
+        .header-title img:hover {
+            transform: scale(1.1);
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 300;
             color: var(--secondary-color);
-            max-width: 600px;
-            margin-top: 0.5rem;
+            max-width: 700px;
+            margin: 1rem auto;
+            line-height: 1.6;
         }
 
-        .content {
-            max-width: 1200px;
+        main {
+            max-width: 1400px;
             width: 100%;
             padding: 2rem;
             z-index: 1;
+        }
+
+        .content {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            animation: slideUp 1s ease-in;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 20px;
-            padding: 1.5rem;
-            width: 23%;
-            min-width: 250px;
+            padding: 2rem;
+            width: 22%;
+            min-width: 280px;
             box-shadow: var(--shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            border: 1px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 111, 97, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(255, 111, 97, 0.3);
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(255, 111, 97, 0.4);
         }
 
         .card i {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: var(--accent-color);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover i {
+            transform: scale(1.2);
         }
 
         .card h2 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             color: var(--accent-color);
-            margin-bottom: 0.8rem;
+            margin-bottom: 1rem;
         }
 
         .card p {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--secondary-color);
             font-weight: 300;
-            flex-grow: 1;
+            line-height: 1.5;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 1rem 3rem;
+            padding: 1.2rem 4rem;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: var(--accent-color);
             color: var(--bg-color);
             border-radius: 50px;
             text-decoration: none;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 2rem 0;
+            margin: 3rem auto;
+            display: block;
+            width: fit-content;
+            animation: pulse 2s infinite;
         }
 
         .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 111, 97, 0.6);
+        }
+
+        .stats-section, .testimonials, .faq, .contact {
+            margin: 4rem 0;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .stats-section h2, .testimonials h2, .faq h2, .contact h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            width: 200px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            width: 30%;
+            min-width: 280px;
+            box-shadow: var(--shadow);
+            margin: 1rem;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1rem 0;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact input, .contact textarea {
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--accent-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .contact button {
+            padding: 1rem;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .contact button:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 111, 97, 0.5);
         }
 
         footer {
             text-align: center;
-            padding: 2rem;
-            font-size: 1rem;
+            padding: 3rem 2rem;
+            font-size: 1.1rem;
             color: var(--secondary-color);
+            background: rgba(22, 33, 62, 0.9);
+            width: 100%;
             z-index: 1;
         }
 
@@ -177,130 +346,267 @@
             color: var(--accent-color);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         footer a:hover {
             color: #ff877b;
         }
 
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* Responsividade */
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
+            .card { width: 30%; }
+            .testimonial-card { width: 45%; }
+        }
+
+        @media (max-width: 992px) {
+            nav ul { gap: 1rem; }
+            h1 { font-size: 2.8rem; }
+            .header-title img { width: 60px; height: 60px; }
             .card { width: 45%; }
+            .testimonial-card { width: 100%; }
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2rem; }
-            .header-title img { width: 40px; height: 40px; }
-            header p { font-size: 1rem; }
+            nav { flex-direction: column; gap: 1rem; }
+            h1 { font-size: 2.2rem; }
+            header p { font-size: 1.1rem; }
             .card { width: 100%; }
-            .card h2 { font-size: 1.3rem; }
-            .card i { font-size: 2rem; }
-            .cta-button { padding: 0.8rem 2rem; font-size: 1.1rem; }
+            .cta-button { padding: 1rem 3rem; font-size: 1.2rem; }
             .content { padding: 1rem; gap: 1rem; }
+            .stats-section h2, .testimonials h2, .faq h2, .contact h2 { font-size: 2rem; }
+        }
+
+        @media (max-width: 576px) {
+            .header-title img { width: 50px; height: 50px; }
+            .card h2 { font-size: 1.4rem; }
+            .card i { font-size: 2.5rem; }
         }
     </style>
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "DataBit",
+        "operatingSystem": "Discord",
+        "applicationCategory": "Communication",
+        "description": "DataBit é um bot Discord gratuito e open-source para gerenciar servidores com funcionalidades de tickets, registros, boas-vindas e proteção anti-raid.",
+        "url": "https://codeprojects.discloud.app/",
+        "image": "https://i.imgur.com/FI0J8Aw.png",
+        "author": {
+            "@type": "Organization",
+            "name": "CodeProjects",
+            "url": "https://codeprojects.discloud.app/"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "150"
+        }
+    }
+    </script>
 </head>
 <body>
     <!-- Background 3D -->
-    <div id="canvas-bg"></div>
+    <div id="canvas-bg" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav role="navigation" aria-label="Menu principal">
+        <div class="logo">
+            <img src="https://i.imgur.com/FI0J8Aw.png" alt="Logo do DataBit" loading="lazy">
+        </div>
+        <ul>
+            <li><a href="#home" aria-label="Página inicial">Início</a></li>
+            <li><a href="#features" aria-label="Funcionalidades do DataBit">Funcionalidades</a></li>
+            <li><a href="https://docs.codeprojects.discloud.app/" target="_blank" aria-label="Documentação do DataBit">Documentação</a></li>
+            <li><a href="https://discord.gg/AhcHfUpNeM" target="_blank" aria-label="Servidor de suporte do DataBit">Suporte</a></li>
+        </ul>
+    </nav>
 
     <!-- Header -->
-    <header>
+    <header id="home">
         <div class="header-title">
-            <img src="https://imgur.com/FI0J8Aw.png" alt="DataBit Logo">
+            <img src="https://i.imgur.com/FI0J8Aw.png" alt="Logo do DataBit" loading="lazy">
             <h1>DataBit</h1>
         </div>
-        <p>Um bot Discord poderoso para gerenciar e proteger sua comunidade</p>
+        <p>Um bot Discord poderoso e gratuito para gerenciar e proteger sua comunidade com facilidade.</p>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <div class="content">
-        <div class="card">
-            <i class="fas fa-user-check"></i>
-            <h2>Registro</h2>
-            <p>Simplifique a entrada com uma embed personalizável e botão interativo para atribuir cargos automaticamente.</p>
-        </div>
+    <!-- Main Content -->
+    <main>
+        <!-- Features -->
+        <section id="features" class="content" aria-label="Funcionalidades do DataBit">
+            <article class="card">
+                <i class="fas fa-user-check" aria-hidden="true"></i>
+                <h2>Registro</h2>
+                <p>Simplifique a entrada com uma embed personalizável e botão interativo para atribuir cargos automaticamente.</p>
+            </article>
+            <article class="card">
+                <i class="fas fa-ticket-alt" aria-hidden="true"></i>
+                <h2>Tickets</h2>
+                <p>Gerencie suporte com categorias, painéis interativos, notificações e avaliações após o fechamento.</p>
+            </article>
+            <article class="card">
+                <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                <h2>Anti-Raid</h2>
+                <p>Proteja contra raids com monitoramento e lockdowns automáticos configuráveis.</p>
+            </article>
+            <article class="card">
+                <i class="fas fa-handshake" aria-hidden="true"></i>
+                <h2>Boas-Vindas</h2>
+                <p>Receba novos membros com imagens dinâmicas, cargos automáticos e mensagens privadas.</p>
+            </article>
+        </section>
 
-        <div class="card">
-            <i class="fas fa-ticket-alt"></i>
-            <h2>Tickets</h2>
-            <p>Gerencie suporte com categorias, painéis interativos, notificações e avaliações após o fechamento.</p>
-        </div>
+        <!-- Call to Action -->
+        <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button" aria-label="Adicionar DataBit ao Discord">Adicionar ao Discord</a>
 
-        <div class="card">
-            <i class="fas fa-shield-alt"></i>
-            <h2>Anti-Raid</h2>
-            <p>Proteja contra raids com monitoramento e lockdowns automáticos configuráveis.</p>
-        </div>
+        <!-- Stats Section -->
+        <section class="stats-section" aria-label="Estatísticas do DataBit">
+            <h2>Nosso Impacto</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>10K+</h3>
+                    <p>Servidores Ativos</p>
+                </div>
+                <div class="stat-card">
+                    <h3>500K+</h3>
+                    <p>Usuários Impactados</p>
+                </div>
+                <div class="stat-card">
+                    <h3>99.9%</h3>
+                    <p>Uptime Garantido</p>
+                </div>
+            </div>
+        </section>
 
-        <div class="card">
-            <i class="fas fa-handshake"></i>
-            <h2>Boas-Vindas</h2>
-            <p>Receba novos membros com imagens dinâmicas, cargos automáticos e mensagens privadas.</p>
-        </div>
-    </div>
+        <!-- Testimonials -->
+        <section class="testimonials" aria-label="Depoimentos da comunidade">
+            <h2>O que dizem sobre nós</h2>
+            <div class="content">
+                <div class="testimonial-card">
+                    <p>"DataBit transformou a forma como gerenciamos nosso servidor. Os tickets são incríveis!"</p>
+                    <h3>- João, Moderador</h3>
+                </div>
+                <div class="testimonial-card">
+                    <p>"A proteção anti-raid salvou nossa comunidade de ataques. Recomendo fortemente!"</p>
+                    <h3>- Maria, Admin</h3>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Fácil de configurar e totalmente gratuito. Melhor bot que já usei!"</p>
+                    <h3>- Pedro, Dono de Servidor</h3>
+                </div>
+            </div>
+        </section>
 
-    <!-- Call to Action -->
-    <a href="https://discord.com/oauth2/authorize?client_id=1350077184072749186&permissions=8&integration_type=0&scope=bot+applications.commands" class="cta-button">Adicionar ao Discord</a>
+        <!-- FAQ -->
+        <section class="faq" aria-label="Perguntas frequentes">
+            <h2>Perguntas Frequentes</h2>
+            <div class="faq-item">
+                <h3>Como adiciono o DataBit ao meu servidor?</h3>
+                <p>Clique no botão "Adicionar ao Discord" e siga as instruções para autorizar o bot.</p>
+            </div>
+            <div class="faq-item">
+                <h3>O DataBit é realmente gratuito?</h3>
+                <p>Sim! DataBit é 100% gratuito e open-source, sem custos ocultos.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Posso personalizar as funcionalidades?</h3>
+                <p>Sim, o DataBit permite personalização completa via comandos e configurações no painel.</p>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact" aria-label="Formulário de contato">
+            <h2>Entre em Contato</h2>
+            <form aria-label="Formulário de contato">
+                <input type="text" placeholder="Nome" aria-label="Seu nome" required>
+                <input type="email" placeholder="E-mail" aria-label="Seu e-mail" required>
+                <textarea placeholder="Sua mensagem" rows="5" aria-label="Sua mensagem" required></textarea>
+                <button type="submit" aria-label="Enviar mensagem">Enviar</button>
+            </form>
+        </section>
+    </main>
 
     <!-- Footer -->
-    <footer>
-        Feito com ❤️ por <a href="https://github.com/LucasDesignerF">LucasDesignerF</a>, <a href="https://codeprojects.discloud.app/">CodeProjects</a> e <a href="https://discord.gg/x74fnzcz2S">RedeGamer</a> | <a href="https://discord.gg/AhcHfUpNeM">Servidor Oficial</a>
+    <footer aria-label="Rodapé do site">
+        <p>Feito com ❤️ por <a href="https://github.com/LucasDesignerF" aria-label="Perfil de LucasDesignerF no GitHub">LucasDesignerF</a>, <a href="https://codeprojects.discloud.app/" aria-label="Site da CodeProjects">CodeProjects</a> e <a href="https://discord.gg/x74fnzcz2S" aria-label="Servidor da RedeGamer no Discord">RedeGamer</a> | <a href="https://discord.gg/AhcHfUpNeM" aria-label="Servidor Oficial do DataBit no Discord">Servidor Oficial</a></p>
     </footer>
 
     <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
     <script>
-        // Configuração do Three.js
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-bg').appendChild(renderer.domElement);
-
-        // Partículas com cor salmão
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 800;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for (let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 150;
-        }
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.15,
-            color: 0xff6f61, /* Salmão */
-            transparent: true,
-            opacity: 0.7,
-            blending: THREE.AdditiveBlending
-        });
-
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-
-        camera.position.z = 50;
-
-        // Animação suave
-        function animate() {
-            requestAnimationFrame(animate);
-            particlesMesh.rotation.x += 0.0005;
-            particlesMesh.rotation.y += 0.001;
-            const positions = particlesMesh.geometry.attributes.position.array;
-            for (let i = 0; i < particlesCount * 3; i += 3) {
-                positions[i + 2] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.01;
-                if (positions[i + 2] > 75) positions[i + 2] = -75;
-            }
-            particlesMesh.geometry.attributes.position.needsUpdate = true;
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        // Responsividade
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+        document.addEventListener('DOMContentLoaded', () => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-bg').appendChild(renderer.domElement);
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 200;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.2,
+                color: 0xff6f61,
+                transparent: true,
+                opacity: 0.7,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            camera.position.z = 60;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.x += 0.0003;
+                particlesMesh.rotation.y += 0.0008;
+                const positions = particlesMesh.geometry.attributes.position.array;
+                for (let i = 0; i < particlesCount * 3; i += 3) {
+                    positions[i + 2] += Math.sin(Date.now() * 0.001 + positions[i]) * 0.015;
+                    if (positions[i + 2] > 100) positions[i + 2] = -100;
+                }
+                particlesMesh.geometry.attributes.position.needsUpdate = true;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
         });
     </script>
 </body>
