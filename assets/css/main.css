@@ -4,7 +4,7 @@
     --accent-color: #ff6f61;
     --secondary-color: #e0e0e0;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    --card-bg: rgba(22, 33, 62, 0.9);
+    --card-bg: #ff6f61;
     --gradient-bg: linear-gradient(135deg, #16213e, #2a3a6b);
 }
 
