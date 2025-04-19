@@ -91,7 +91,7 @@ nav ul li a:hover, nav ul li a:focus {
 
 header {
     text-align: center;
-    padding: 6rem 1rem 3rem;
+    padding: 8rem 1rem 3rem; /* Aumentado de 6rem para 8rem para mais espaço */
     z-index: 1;
     animation: fadeIn 1s ease-in;
 }
@@ -208,6 +208,12 @@ main {
     line-height: 1.5;
 }
 
+.cta-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto;
+}
+
 .cta-button {
     display: inline-block;
     padding: 1rem 3rem;
@@ -221,8 +227,6 @@ main {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 2rem auto;
-    width: fit-content;
     animation: pulse 2s infinite;
 }
 
