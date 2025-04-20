@@ -46,7 +46,7 @@ O **DataBit** é um bot Discord *gratuito* e *open-source* projetado para simpli
 - 🎨 **Personalização Total**: Embeds, imagens e mensagens sob medida.
 - 🛡️ **Seguro e Confiável**: Proteção contra raids e hospedagem na Discloud.
 
-Visite nosso [site oficial](https://codeprojects.discloud.app/) ou junte-se ao [servidor de suporte](https://discord.gg/AhcHfUpNeM)!
+Visite nosso [site oficial](https://databit-freebot.redebots.shop/) ou junte-se ao [servidor de suporte](https://discord.gg/AhcHfUpNeM)!
 
 ---
 
@@ -106,7 +106,7 @@ Visite nosso [site oficial](https://codeprojects.discloud.app/) ou junte-se ao [
    python main.py
    ```
 
-*Hospede na [Discloud](https://discloud.app/) para uptime 24/7. Veja a [documentação](https://docs.codeprojects.discloud.app/).*
+*Hospede na [Discloud](https://discloud.app/) para uptime 24/7. Veja a [documentação](https://github.com/LucasDesignerF/bot-databit).*
 
 ---
 
@@ -176,7 +176,7 @@ Licenciado sob a **[MIT License](LICENSE)**. Veja mais detalhes no arquivo de li
 
 ### 📞 Contato
 
-- 🌐 **Website**: [codeprojects.discloud.app](https://codeprojects.discloud.app/)
+- 🌐 **Website**: [codeprojects.discloud.app](https://databit-freebot.redebots.shop/)
 - 💬 **Discord**: [Servidor Oficial](https://discord.gg/AhcHfUpNeM) | `lrfortes`
 - 🐙 **GitHub**: [LucasDesignerF](https://github.com/LucasDesignerF)
 - 📧 **Email**: [ofc.rede@gmail.com](mailto:ofc.rede@gmail.com)
