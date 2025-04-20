@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://codeprojects.discloud.app/assets/images/logo.png" alt="DataBit Logo" width="150"/>
+  <img src="https://imgur.com/MMvOfe1.png" alt="DataBit Logo" width="150"/>
 </p>
 
 <h1 align="center">DataBit 🤖</h1>
