@@ -3,15 +3,14 @@
 # Date of Creation: 14/03/2025
 # Created by: CodeProjects
 # Modified by: Grok (xAI), CodeProjects, RedeGamer
-# Date of Modification: 20/04/2025
-# Reason of Modification: Correção de anexos para imagens locais na embed, adição de logging para anexos
-# Version: 2.3.2
+# Date of Modification: 23/04/2025
+# Reason of Modification: Migração de JSON para SQLite, remoção de gerenciamento de arquivos, correção de referência a default_config
+# Version: 3.0.1
 # Developer Of Version: Grok (xAI), CodeProjects, RedeGamer - Serviços Escaláveis para seu Game
 
 import nextcord
 from nextcord.ext import commands
 from nextcord import Interaction, SlashOption
-import os
 import json
 import logging
 import aiohttp
@@ -26,35 +25,9 @@ logger.setLevel(logging.INFO)
 class RegisterCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.data_dir = "data"
+        self.db = bot.db  # Usa a conexão SQLite fornecida pelo main.py
         self.session = None
-        self.ensure_base_directory()
-
-    def ensure_base_directory(self):
-        """Cria o diretório base e verifica permissões de escrita."""
-        logger.info(f"Verificando permissões para {self.data_dir}")
-        os.makedirs(self.data_dir, exist_ok=True)
-        try:
-            test_file = os.path.join(self.data_dir, "test.txt")
-            with open(test_file, "w") as f:
-                f.write("test")
-            os.remove(test_file)
-            logger.info("Permissões de escrita confirmadas em data/")
-        except Exception as e:
-            logger.error(f"Erro de permissão em data/: {e}")
-
-    def ensure_guild_directory(self, guild_id: str):
-        """Garante que a pasta do servidor exista."""
-        guild_dir = os.path.join(self.data_dir, guild_id)
-        backgrounds_dir = os.path.join(guild_dir, "backgrounds")
-        os.makedirs(backgrounds_dir, exist_ok=True)
-        return backgrounds_dir
-
-    def load_config(self, guild_id: str) -> dict:
-        """Carrega a configuração de registro do servidor."""
-        self.ensure_guild_directory(guild_id)
-        config_file = os.path.join(self.data_dir, guild_id, "register_config.json")
-        default_config = {
+        self.default_config = {
             "role_id": None,
             "embed_title": "🚀 Bem-vindo ao Registro!",
             "embed_description": (
@@ -68,33 +41,53 @@ class RegisterCog(commands.Cog):
             "embed_thumbnail_url": "",
             "embed_footer": "Sistema de Registro Automático - by CodeProjects"
         }
+
+    def load_config(self, guild_id: str) -> dict:
+        """Carrega a configuração de registro do banco de dados."""
         try:
-            if os.path.exists(config_file):
-                with open(config_file, "r", encoding="utf-8") as f:
-                    config = json.load(f)
-                    return {**default_config, **config}
-            return default_config
+            cursor = self.db.cursor()
+            cursor.execute("SELECT * FROM register_config WHERE guild_id = ?", (guild_id,))
+            result = cursor.fetchone()
+            if result:
+                config = dict(result)
+                return {**self.default_config, **config}
+            return self.default_config
         except Exception as e:
-            logger.error(f"Erro ao carregar config de {guild_id}: {e}")
-            return default_config
+            logger.error(f"Erro ao carregar register_config de {guild_id}: {e}")
+            return self.default_config
 
     def save_config(self, guild_id: str, config: dict):
-        """Salva a configuração de registro do servidor."""
-        self.ensure_guild_directory(guild_id)
-        config_file = os.path.join(self.data_dir, guild_id, "register_config.json")
+        """Salva a configuração de registro no banco de dados."""
         try:
-            with open(config_file, "w", encoding="utf-8") as f:
-                json.dump(config, f, indent=4)
+            cursor = self.db.cursor()
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO register_config (
+                    guild_id, role_id, embed_title, embed_description,
+                    embed_image_url, embed_thumbnail_url, embed_footer
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    guild_id,
+                    config.get("role_id"),
+                    config.get("embed_title", self.default_config["embed_title"]),
+                    config.get("embed_description", self.default_config["embed_description"]),
+                    config.get("embed_image_url", ""),
+                    config.get("embed_thumbnail_url", ""),
+                    config.get("embed_footer", self.default_config["embed_footer"])
+                )
+            )
+            self.db.commit()
             logger.info(f"Configuração salva para servidor {guild_id}")
         except Exception as e:
-            logger.error(f"Erro ao salvar config de {guild_id}: {e}")
+            logger.error(f"Erro ao salvar register_config de {guild_id}: {e}")
 
     async def validate_url(self, url: str) -> bool:
         """Valida se a URL é acessível e retorna uma imagem."""
         if not url:
             return True
         if not self.session:
-            self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/2.3.2"})
+            self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/3.0"})
         try:
             async with self.session.get(url) as resp:
                 if resp.status == 200 and resp.headers.get("Content-Type", "").startswith("image/"):
@@ -239,7 +232,6 @@ class RegisterCog(commands.Cog):
 
         guild_id = str(interaction.guild.id)
         config = self.load_config(guild_id)
-        backgrounds_dir = self.ensure_guild_directory(guild_id)
 
         # Processa upload de imagens
         if image_file:
@@ -252,11 +244,8 @@ class RegisterCog(commands.Cog):
                     return
                 file_data = await image_file.read()
                 file_hash = hashlib.md5(file_data).hexdigest()
-                local_path = os.path.join(backgrounds_dir, f"image_{file_hash}.png")
-                with open(local_path, "wb") as f:
-                    f.write(file_data)
-                config["embed_image_url"] = f"local://image_{file_hash}.png"
-                logger.info(f"Imagem principal carregada para {guild_id}: {local_path}")
+                config["embed_image_url"] = f"attachment://{file_hash}.png"
+                logger.info(f"Imagem principal carregada via upload para {guild_id}")
             except Exception as e:
                 logger.error(f"Erro ao processar upload de imagem principal para {guild_id}: {e}")
                 await interaction.response.send_message(
@@ -275,11 +264,8 @@ class RegisterCog(commands.Cog):
                     return
                 file_data = await thumbnail_file.read()
                 file_hash = hashlib.md5(file_data).hexdigest()
-                local_path = os.path.join(backgrounds_dir, f"thumbnail_{file_hash}.png")
-                with open(local_path, "wb") as f:
-                    f.write(file_data)
-                config["embed_thumbnail_url"] = f"local://thumbnail_{file_hash}.png"
-                logger.info(f"Thumbnail carregado para {guild_id}: {local_path}")
+                config["embed_thumbnail_url"] = f"attachment://{file_hash}.png"
+                logger.info(f"Thumbnail carregado via upload para {guild_id}")
             except Exception as e:
                 logger.error(f"Erro ao processar upload de thumbnail para {guild_id}: {e}")
                 await interaction.response.send_message(
@@ -317,45 +303,21 @@ class RegisterCog(commands.Cog):
 
         guild_id = str(interaction.guild.id)
         config = self.load_config(guild_id)
-        backgrounds_dir = self.ensure_guild_directory(guild_id)
 
         # Usa configurações personalizadas ou valores padrão
-        embed_title = config.get("embed_title", "🚀 Bem-vindo ao Registro!")
-        embed_description = config.get("embed_description", (
-            "Olá! Para liberar o acesso completo ao servidor, registre-se agora.\n"
-            "Aqui está tudo o que você precisa saber:\n\n"
-            "➜ **Passo Único:** Clique no botão abaixo para se registrar.\n"
-            "➜ **Benefícios:** Acesso aos canais principais e participação na comunidade!\n"
-            "➜ **Aviso:** Sem registro, seu acesso será limitado."
-        ))
+        embed_title = config.get("embed_title", self.default_config["embed_title"])
+        embed_description = config.get("embed_description", self.default_config["embed_description"])
         embed_image_url = config.get("embed_image_url", "")
         embed_thumbnail_url = config.get("embed_thumbnail_url", "")
-        embed_footer = config.get("embed_footer", "Sistema de Registro Automático - by CodeProjects")
+        embed_footer = config.get("embed_footer", self.default_config["embed_footer"])
 
-        # Prepara anexos para imagens locais
+        # Valida URLs (ignora attachment://)
         files = []
-        image_filename = None
-        thumbnail_filename = None
-
-        if embed_image_url.startswith("local://"):
-            image_filename = embed_image_url.replace("local://", "")
-            local_path = os.path.join(backgrounds_dir, image_filename)
-            if os.path.exists(local_path):
-                files.append(nextcord.File(local_path, filename=image_filename))
-                embed_image_url = f"attachment://{image_filename}"
-                logger.info(f"Anexando imagem local: {local_path}")
-            else:
-                logger.warning(f"Imagem local não encontrada: {local_path}")
+        if embed_image_url and not embed_image_url.startswith("attachment://"):
+            if not await self.validate_url(embed_image_url):
                 embed_image_url = ""
-        if embed_thumbnail_url.startswith("local://"):
-            thumbnail_filename = embed_thumbnail_url.replace("local://", "")
-            local_path = os.path.join(backgrounds_dir, thumbnail_filename)
-            if os.path.exists(local_path):
-                files.append(nextcord.File(local_path, filename=thumbnail_filename))
-                embed_thumbnail_url = f"attachment://{thumbnail_filename}"
-                logger.info(f"Anexando thumbnail local: {local_path}")
-            else:
-                logger.warning(f"Thumbnail local não encontrado: {local_path}")
+        if embed_thumbnail_url and not embed_thumbnail_url.startswith("attachment://"):
+            if not await self.validate_url(embed_thumbnail_url):
                 embed_thumbnail_url = ""
 
         # Cor da embed
@@ -391,28 +353,20 @@ class RegisterCog(commands.Cog):
             guild_id = str(interaction_button.guild.id)
             register_config = self.load_config(guild_id)
 
-            # Carrega o cargo inicial do sistema de boas-vindas
-            welcome_config_file = os.path.join(self.data_dir, guild_id, "welcome_config.json")
-            if not os.path.exists(welcome_config_file):
-                await interaction_button.response.send_message(
-                    "Erro: O sistema de boas-vindas não está configurado. Contate um administrador.",
-                    ephemeral=True
-                )
-                logger.error(f"welcome_config.json não encontrado em {guild_id}")
-                return
-
+            # Carrega o cargo inicial do sistema de boas-vindas do banco
             try:
-                with open(welcome_config_file, "r", encoding="utf-8") as f:
-                    welcome_config = json.load(f)
+                cursor = self.db.cursor()
+                cursor.execute("SELECT role_id FROM welcome_config WHERE guild_id = ?", (guild_id,))
+                result = cursor.fetchone()
+                initial_role_id = result["role_id"] if result else None
             except Exception as e:
                 await interaction_button.response.send_message(
                     "Erro: Não foi possível carregar a configuração de boas-vindas. Contate um administrador.",
                     ephemeral=True
                 )
-                logger.error(f"Erro ao carregar welcome_config.json em {guild_id}: {e}")
+                logger.error(f"Erro ao carregar welcome_config de {guild_id}: {e}")
                 return
 
-            initial_role_id = welcome_config.get("role_id")
             role_id = register_config.get("role_id")
 
             if not role_id or not initial_role_id:
@@ -505,6 +459,12 @@ class RegisterCog(commands.Cog):
                 ephemeral=True
             )
             logger.error(f"Erro ao enviar embed para {channel.id} em {guild_id}: {e}")
+
+    async def close(self):
+        """Fecha a sessão HTTP."""
+        if self.session:
+            await self.session.close()
+            self.session = None
 
 def setup(bot):
     bot.add_cog(RegisterCog(bot))

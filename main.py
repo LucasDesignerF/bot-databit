@@ -1,13 +1,14 @@
 # main.py
-# Description: Arquivo principal do bot DataBit, responsável por inicialização, cogs e comandos administrativos
+# Description: Arquivo principal do bot DataBit, responsável por inicialização, cogs, comandos administrativos e servidor Flask para transcrições
 # Date of Creation: 12/03/2025
 # Created by: CodeProjects
-# Modified by: CodeProjects, RedeGamer
-# Date of Modification: 19/04/2025
-# Reason of Modification: Correção de sincronização de comandos e implementação de status por servidor via canais
-# Version: 1.6.4
-# Developer Of Version: CodeProjects and RedeGamer - Serviços Escaláveis para seu Game
+# Modified by: CodeProjects, RedeGamer, Grok (xAI)
+# Date of Modification: 29/04/2025
+# Reason of Modification: Adição de servidor Flask para transcrições na porta 8080, integração com TicketCog
+# Version: 3.0.3
+# Developer Of Version: CodeProjects, RedeGamer, Grok (xAI) - Serviços Escaláveis para seu Game
 
+from datetime import datetime
 import nextcord
 from nextcord.ext import commands
 import os
@@ -18,18 +19,20 @@ import logging
 from logging.handlers import RotatingFileHandler
 from dotenv import load_dotenv
 import sys
+import sqlite3
 import json
+from flask import Flask, send_from_directory, abort
+import threading
 
 # Configuração de logging
 logger = logging.getLogger("DataBit")
 logger.setLevel(logging.INFO)
-os.makedirs("logs", exist_ok=True)  # Cria diretório de logs se não existir
+os.makedirs("logs", exist_ok=True)
 handler = RotatingFileHandler("logs/databit.log", maxBytes=5*1024*1024, backupCount=3, encoding="utf-8")
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
-# Configura StreamHandler com tratamento de codificação para o console
 console_handler = logging.StreamHandler(stream=sys.stdout)
 console_handler.setFormatter(formatter)
 if sys.platform == "win32":
@@ -46,53 +49,116 @@ if not DISCORD_TOKEN:
 # Configurações
 OWNER_ID = 1219787450583486500
 DATA_DIR = "data"
-GLOBAL_STATUS_FILE = os.path.join(DATA_DIR, "global_status.json")
+DB_FILE = "databit.db"
 NOTIFY_COLOR = nextcord.Color.from_rgb(43, 45, 49)
 NOTIFY_THUMBNAIL = "https://cdn-icons-png.flaticon.com/512/5060/5060502.png"
-NOTIFY_DELAY = 5  # Atraso em segundos entre notificações
+NOTIFY_DELAY = 5
+TRANSCRIPTS_DIR = "transcripts"
 
 # Configuração do bot com todas as intents
 intents = nextcord.Intents.all()
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+# Configuração do Flask
+app = Flask(__name__)
+
+@app.route('/transcripts/<filename>')
+def serve_transcript(filename):
+    """Rota para servir arquivos de transcrição HTML."""
+    try:
+        # Verifica se o arquivo existe e tem extensão .html
+        if not filename.endswith('.html'):
+            logger.warning(f"Tentativa de acesso a arquivo inválido: {filename}")
+            abort(404)
+        file_path = os.path.join(TRANSCRIPTS_DIR, filename)
+        if not os.path.exists(file_path):
+            logger.warning(f"Transcrição não encontrada: {filename}")
+            abort(404)
+        logger.info(f"Servindo transcrição: {filename}")
+        return send_from_directory(TRANSCRIPTS_DIR, filename)
+    except Exception as e:
+        logger.error(f"Erro ao servir transcrição {filename}: {e}")
+        abort(500)
+
+def run_flask():
+    """Executa o servidor Flask na porta 8080."""
+    try:
+        logger.info("Iniciando servidor Flask na porta 8080")
+        app.run(host='0.0.0.0', port=8080, debug=False, use_reloader=False)
+    except Exception as e:
+        logger.error(f"Erro ao iniciar servidor Flask: {e}")
+        exit(1)
+
+# Conexão com SQLite
+def init_db():
+    """Inicializa a conexão com o banco de dados SQLite."""
+    conn = sqlite3.connect(DB_FILE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+db = init_db()
+bot.db = db  # Atribui a conexão ao bot para uso nas cogs
+
 # Função para processar emoji personalizado para exibição
 def process_emoji(emoji_input: str) -> str:
-    """Valida e retorna emoji personalizado para exibição."""
     emoji_pattern = r"<a?:[a-zA-Z0-9_]+:\d+>"
     if re.match(emoji_pattern, emoji_input):
         return emoji_input
     return emoji_input
 
-# Função para limpar emoji do status (CustomActivity não suporta emojis personalizados)
+# Função para limpar emoji do status
 def clean_status(text: str) -> str:
-    """Remove emojis personalizados do texto do status."""
     return re.sub(r"<a?:[a-zA-Z0-9_]+:\d+>", "", text).strip()
 
 # Função para carregar status de um servidor ou global
 def load_status(guild_id: str = None) -> dict:
-    """Carrega o status de um servidor ou o status global."""
-    status_file = GLOBAL_STATUS_FILE if guild_id is None else os.path.join(DATA_DIR, guild_id, "status.json")
     default_status = {"text": "🛡️ Anti-Raid Ativado", "type": "online", "emoji": "", "channel_id": None}
     try:
-        if os.path.exists(status_file):
-            with open(status_file, "r", encoding="utf-8") as f:
-                return json.load(f)
+        cursor = db.cursor()
+        if guild_id:
+            cursor.execute(
+                "SELECT text, type, emoji, channel_id FROM guild_status WHERE guild_id = ?",
+                (guild_id,)
+            )
+        else:
+            cursor.execute(
+                "SELECT text, type, emoji FROM global_status WHERE id = 1"
+            )
+        result = cursor.fetchone()
+        if result:
+            status = dict(result)
+            if guild_id and "channel_id" not in status:
+                status["channel_id"] = None
+            return status
         return default_status
     except Exception as e:
-        logger.error(f"Erro ao carregar status de {status_file}: {e}")
+        logger.error(f"Erro ao carregar status de {guild_id or 'global'}: {e}")
         return default_status
 
 # Função para salvar status de um servidor ou global
 def save_status(status_text: str, status_type: str, emoji: str, guild_id: str = None, channel_id: str = None):
-    """Salva o status de um servidor ou o status global."""
-    status_file = GLOBAL_STATUS_FILE if guild_id is None else os.path.join(DATA_DIR, guild_id, "status.json")
     try:
-        os.makedirs(os.path.dirname(status_file), exist_ok=True)
-        status_data = {"text": status_text, "type": status_type, "emoji": emoji, "channel_id": channel_id}
-        with open(status_file, "w", encoding="utf-8") as f:
-            json.dump(status_data, f, indent=2)
+        cursor = db.cursor()
+        if guild_id:
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO guild_status (guild_id, text, type, emoji, channel_id)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (guild_id, status_text, status_type, emoji, channel_id)
+            )
+        else:
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO global_status (id, text, type, emoji)
+                VALUES (1, ?, ?, ?)
+                """,
+                (status_text, status_type, emoji)
+            )
+        db.commit()
+        logger.info(f"Status salvo para {guild_id or 'global'}")
     except Exception as e:
-        logger.error(f"Erro ao salvar status em {status_file}: {e}")
+        logger.error(f"Erro ao salvar status para {guild_id or 'global'}: {e}")
 
 # Classe para o Modal de configuração de status
 class StatusModal(nextcord.ui.Modal):
@@ -161,7 +227,6 @@ class StatusModal(nextcord.ui.Modal):
                         ephemeral=True
                     )
                     return
-                # Carrega o canal de status do servidor
                 status_config = load_status(self.guild_id)
                 channel_id = status_config.get("channel_id")
                 if channel_id:
@@ -182,7 +247,6 @@ class StatusModal(nextcord.ui.Modal):
                     ephemeral=True
                 )
             else:
-                # Atualiza o status global do bot
                 await bot.change_presence(
                     status=status,
                     activity=nextcord.CustomActivity(name=clean_status_text)
@@ -237,11 +301,11 @@ class NotifyModal(nextcord.ui.Modal):
                     await owner.send(embed=embed)
                     logger.info(f"Notificação enviada para {owner} do servidor {guild.name}")
                     success_count += 1
-                    await asyncio.sleep(NOTIFY_DELAY)  # Atraso configurável para evitar rate limit
+                    await asyncio.sleep(NOTIFY_DELAY)
                 except nextcord.Forbidden:
                     logger.warning(f"Não foi possível enviar DM para {owner} do servidor {guild.name} (DMs fechadas)")
                 except nextcord.HTTPException as e:
-                    if e.status == 429:  # Rate limit
+                    if e.status == 429:
                         retry_after = e.retry_after or NOTIFY_DELAY
                         logger.warning(f"Rate limit atingido. Aguardando {retry_after}s")
                         await asyncio.sleep(retry_after)
@@ -307,12 +371,16 @@ async def on_ready():
 @bot.event
 async def on_guild_join(guild):
     guild_id = str(guild.id)
-    guild_dir = os.path.join(DATA_DIR, guild_id)
     try:
-        os.makedirs(guild_dir, exist_ok=True)
-        logger.info(f"Pasta de dados criada para o servidor: {guild.name} ({guild_id})")
+        cursor = db.cursor()
+        cursor.execute(
+            "INSERT OR IGNORE INTO guilds (guild_id, created_at) VALUES (?, ?)",
+            (guild_id, datetime.utcnow())
+        )
+        db.commit()
+        logger.info(f"Servidor registrado no banco de dados: {guild.name} ({guild_id})")
     except Exception as e:
-        logger.error(f"Erro ao criar pasta para {guild.name} ({guild_id}): {e}")
+        logger.error(f"Erro ao registrar servidor {guild.name} ({guild_id}): {e}")
 
 # Comando /status restrito ao dono (status por servidor)
 @bot.slash_command(name="status", description="Configura o status do bot em um servidor específico (apenas dono)")
@@ -404,7 +472,6 @@ async def root_notify_command(interaction: nextcord.Interaction):
 
 # Função para verificar se o arquivo é um cog
 def is_cog(file_path: str) -> bool:
-    """Verifica se o arquivo contém uma função setup válida."""
     try:
         spec = importlib.util.spec_from_file_location("module", file_path)
         if spec is None:
@@ -418,29 +485,43 @@ def is_cog(file_path: str) -> bool:
 
 # Função para carregar cogs dinamicamente
 def load_cogs():
-    """Carrega todos os cogs válidos do diretório cogs/."""
-    cogs_dir = "cogs"
-    try:
-        os.makedirs(cogs_dir, exist_ok=True)
-        logger.info(f"Diretório '{cogs_dir}' criado ou já existente")
-    except Exception as e:
-        logger.error(f"Erro ao criar diretório '{cogs_dir}': {e}")
-        return
-    for root, _, files in os.walk(cogs_dir):
-        for filename in files:
-            if filename.endswith(".py") and not filename.startswith("__"):
-                file_path = os.path.join(root, filename)
-                cog_path = file_path.replace(os.sep, ".")[:-3]
-                if is_cog(file_path):
-                    try:
-                        bot.load_extension(cog_path)
-                        logger.info(f"Carregado cog: {cog_path}")
-                    except Exception as e:
-                        logger.error(f"Erro ao carregar cog {cog_path}: {e}")
-                else:
-                    logger.warning(f"Ignorado {cog_path}: não é um cog válido (sem função 'setup')")
+    base_dir = os.path.dirname(os.path.abspath(__file__))  # Diretório do main.py
+    cog_dirs = ["cogs"]  # Apenas a pasta raiz 'cogs' para recursão
+    for cogs_dir in cog_dirs:
+        try:
+            os.makedirs(cogs_dir, exist_ok=True)
+            logger.info(f"Diretório '{cogs_dir}' criado ou já existente")
+        except Exception as e:
+            logger.error(f"Erro ao criar diretório '{cogs_dir}': {e}")
+            continue
+        for root, _, files in os.walk(cogs_dir):
+            for filename in files:
+                if filename.endswith(".py") and not filename.startswith("__"):
+                    file_path = os.path.join(root, filename)
+                    # Calcula o caminho relativo ao diretório do projeto
+                    relative_path = os.path.relpath(file_path, base_dir)
+                    # Converte para formato de importação Python (ex.: cogs.opcionais.game_server_status)
+                    cog_path = relative_path.replace(os.sep, ".")[:-3]  # Remove ".py"
+                    if is_cog(file_path):
+                        try:
+                            bot.load_extension(cog_path)
+                            logger.info(f"Carregado cog: {cog_path}")
+                        except Exception as e:
+                            logger.error(f"Erro ao carregar cog {cog_path}: {e}")
+                    else:
+                        logger.warning(f"Ignorado {cog_path}: não é um cog válido (sem função 'setup')")
 
 if __name__ == "__main__":
-    os.makedirs(DATA_DIR, exist_ok=True)  # Cria diretório de dados se não existir
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(TRANSCRIPTS_DIR, exist_ok=True)
     load_cogs()
-    bot.run(DISCORD_TOKEN)
+    
+    # Inicia o servidor Flask em uma thread separada
+    flask_thread = threading.Thread(target=run_flask, daemon=True)
+    flask_thread.start()
+    
+    try:
+        bot.run(DISCORD_TOKEN)
+    finally:
+        db.close()
+        logger.info("Conexão com banco de dados fechada")

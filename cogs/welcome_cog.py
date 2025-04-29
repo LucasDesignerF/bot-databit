@@ -3,9 +3,9 @@
 # Date of Creation: 12/03/2025
 # Created by: CodeProjects
 # Modified by: Grok (xAI), CodeProjects, RedeGamer
-# Date of Modification: 19/04/2025
-# Reason of Modification: Correção de geração de imagem na Discloud, centralização de avatar/texto, respeito ao font_size
-# Version: 2.9.1
+# Date of Modification: 23/04/2025
+# Reason of Modification: Migração de JSON para SQLite, substituição de gerenciamento de arquivos por banco de dados
+# Version: 3.0
 # Developer Of Version: Grok (xAI), CodeProjects, RedeGamer - Serviços Escaláveis para seu Game
 
 import nextcord
@@ -13,6 +13,7 @@ from nextcord.ext import commands
 from nextcord import Interaction, SlashOption, File, ButtonStyle, TextInputStyle
 import os
 import json
+import sqlite3
 import logging
 from PIL import Image, ImageDraw, ImageFont
 import aiohttp
@@ -317,7 +318,7 @@ class RemoveElementModal(nextcord.ui.Modal):
 class WelcomeCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.data_dir = "data"
+        self.db = bot.db  # Usa a conexão SQLite fornecida pelo main.py
         self.font_dir = "fonts"
         self.assets_dir = "assets"
         self.background_cache = {}
@@ -325,24 +326,15 @@ class WelcomeCog(commands.Cog):
         self.ensure_directories()
 
     def ensure_directories(self):
-        """Cria diretórios necessários."""
+        """Cria diretórios necessários para fontes e assets."""
         os.makedirs(self.font_dir, exist_ok=True)
         os.makedirs(self.assets_dir, exist_ok=True)
         font_path = os.path.join(self.font_dir, "Montserrat-ExtraBold.otf")
         if not os.path.exists(font_path):
             logger.warning("Fonte Montserrat-ExtraBold.otf não encontrada. Usando padrão.")
 
-    def ensure_guild_directory(self, guild_id: str):
-        """Garante que a pasta do servidor exista."""
-        guild_dir = os.path.join(self.data_dir, guild_id)
-        backgrounds_dir = os.path.join(guild_dir, "backgrounds")
-        os.makedirs(backgrounds_dir, exist_ok=True)
-        return backgrounds_dir
-
     def load_config(self, guild_id: str) -> dict:
-        """Carrega a configuração de boas-vindas do servidor."""
-        self.ensure_guild_directory(guild_id)
-        config_file = os.path.join(self.data_dir, guild_id, "welcome_config.json")
+        """Carrega a configuração de boas-vindas do banco de dados."""
         default_config = {
             "role_id": None,
             "channel_id": None,
@@ -352,70 +344,87 @@ class WelcomeCog(commands.Cog):
             "font_size": 50
         }
         try:
-            if os.path.exists(config_file):
-                with open(config_file, "r", encoding="utf-8") as f:
-                    config = json.load(f)
-                    return {**default_config, **config}
+            cursor = self.db.cursor()
+            cursor.execute("SELECT * FROM welcome_config WHERE guild_id = ?", (guild_id,))
+            result = cursor.fetchone()
+            if result:
+                config = dict(result)
+                config["text_color"] = json.loads(config["text_color"])
+                return config
             return default_config
         except Exception as e:
-            logger.error(f"Erro ao carregar config de {guild_id}: {e}")
+            logger.error(f"Erro ao carregar welcome_config de {guild_id}: {e}")
             return default_config
 
     def save_config(self, guild_id: str, config: dict):
-        """Salva a configuração de boas-vindas do servidor."""
-        self.ensure_guild_directory(guild_id)
-        config_file = os.path.join(self.data_dir, guild_id, "welcome_config.json")
+        """Salva a configuração de boas-vindas no banco de dados."""
         try:
-            with open(config_file, "w", encoding="utf-8") as f:
-                json.dump(config, f, indent=4)
+            cursor = self.db.cursor()
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO welcome_config (
+                    guild_id, role_id, channel_id, background_url,
+                    welcome_text, text_color, font_size
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    guild_id,
+                    config.get("role_id"),
+                    config.get("channel_id"),
+                    config.get("background_url", ""),
+                    config.get("welcome_text", "Bem-vindo {member} #{count}!"),
+                    json.dumps(config.get("text_color", [255, 255, 255])),
+                    config.get("font_size", 50)
+                )
+            )
+            self.db.commit()
             logger.info(f"Configuração salva para servidor {guild_id}")
         except Exception as e:
-            logger.error(f"Erro ao salvar config de {guild_id}: {e}")
+            logger.error(f"Erro ao salvar welcome_config de {guild_id}: {e}")
 
     def load_template(self, guild_id: str) -> List[Element]:
-        """Carrega o template de boas-vindas do servidor."""
-        template_file = os.path.join(self.data_dir, guild_id, "welcome_template.json")
-        config = self.load_config(guild_id)  # Carrega config para font_size
+        """Carrega o template de boas-vindas do banco de dados."""
+        config = self.load_config(guild_id)
         try:
-            if os.path.exists(template_file):
-                with open(template_file, "r", encoding="utf-8") as f:
-                    elements_data = json.load(f)
-                elements = []
-                for data in elements_data:
-                    if data["type"] == "avatar":
-                        elements.append(AvatarElement(
-                            x=data["x"], y=data["y"], size=data["size"],
-                            outline=data["outline"], outline_color=data["outline_color"],
-                            opacity=data["opacity"]
-                        ))
-                    elif data["type"] == "text":
-                        elements.append(TextElement(
-                            x=data["x"], y=data["y"], text=data["text"],
-                            font_size=config["font_size"],  # Usa font_size do config
-                            color=data.get("color", config["text_color"]),
-                            font_path=data["font_path"],
-                            opacity=data["opacity"]
-                        ))
-                    elif data["type"] == "shape":
-                        elements.append(ShapeElement(
-                            x=data["x"], y=data["y"], shape_type=data["shape_type"],
-                            width=data["width"], height=data["height"],
-                            color=data["color"], opacity=data["opacity"]
-                        ))
-                    elif data["type"] == "background":
-                        elements.append(BackgroundElement(
-                            source=data["source"], color=data["color"],
-                            opacity=data["opacity"]
-                        ))
-                return elements
-            # Fallback ajustado para usar font_size do config
-            return [
-                BackgroundElement(source=config.get("background_url", "")),
-                AvatarElement(0, 0, 120),  # Posição será ajustada dinamicamente
-                TextElement(0, 0, config["welcome_text"], config["font_size"], config["text_color"])
-            ]
+            cursor = self.db.cursor()
+            cursor.execute("SELECT element_data FROM welcome_template WHERE guild_id = ?", (guild_id,))
+            elements_data = [json.loads(row["element_data"]) for row in cursor.fetchall()]
+            elements = []
+            for data in elements_data:
+                if data["type"] == "avatar":
+                    elements.append(AvatarElement(
+                        x=data["x"], y=data["y"], size=data["size"],
+                        outline=data["outline"], outline_color=data["outline_color"],
+                        opacity=data["opacity"]
+                    ))
+                elif data["type"] == "text":
+                    elements.append(TextElement(
+                        x=data["x"], y=data["y"], text=data["text"],
+                        font_size=config["font_size"],
+                        color=data.get("color", config["text_color"]),
+                        font_path=data["font_path"],
+                        opacity=data["opacity"]
+                    ))
+                elif data["type"] == "shape":
+                    elements.append(ShapeElement(
+                        x=data["x"], y=data["y"], shape_type=data["shape_type"],
+                        width=data["width"], height=data["height"],
+                        color=data["color"], opacity=data["opacity"]
+                    ))
+                elif data["type"] == "background":
+                    elements.append(BackgroundElement(
+                        source=data["source"], color=data["color"],
+                        opacity=data["opacity"]
+                    ))
+            if not elements:
+                return [
+                    BackgroundElement(source=config.get("background_url", "")),
+                    AvatarElement(0, 0, 120),
+                    TextElement(0, 0, config["welcome_text"], config["font_size"], config["text_color"])
+                ]
+            return elements
         except Exception as e:
-            logger.error(f"Erro ao carregar template de {guild_id}: {e}")
+            logger.error(f"Erro ao carregar welcome_template de {guild_id}: {e}")
             return [
                 BackgroundElement(source=config.get("background_url", "")),
                 AvatarElement(0, 0, 120),
@@ -423,23 +432,28 @@ class WelcomeCog(commands.Cog):
             ]
 
     def save_template(self, guild_id: str, elements: List[Element]):
-        """Salva o template de boas-vindas do servidor."""
-        self.ensure_guild_directory(guild_id)
-        template_file = os.path.join(self.data_dir, guild_id, "welcome_template.json")
+        """Salva o template de boas-vindas no banco de dados."""
         try:
-            elements_data = [element.to_dict() for element in elements]
-            with open(template_file, "w", encoding="utf-8") as f:
-                json.dump(elements_data, f, indent=4)
+            cursor = self.db.cursor()
+            cursor.execute("DELETE FROM welcome_template WHERE guild_id = ?", (guild_id,))
+            for element in elements:
+                cursor.execute(
+                    """
+                    INSERT INTO welcome_template (guild_id, element_data)
+                    VALUES (?, ?)
+                    """,
+                    (guild_id, json.dumps(element.to_dict()))
+                )
+            self.db.commit()
             logger.info(f"Template salvo para servidor {guild_id}")
         except Exception as e:
-            logger.error(f"Erro ao salvar template de {guild_id}: {e}")
+            logger.error(f"Erro ao salvar welcome_template de {guild_id}: {e}")
             raise
 
     async def resolve_imgur_url(self, url: str) -> str:
-        """Resolve URLs do Imgur para a imagem direta (simplificado)."""
+        """Resolve URLs do Imgur para a imagem direta."""
         if not url.startswith("https://imgur.com"):
             return url
-        # Substitui diretamente para a URL de imagem (evita BeautifulSoup)
         img_id = url.split("/")[-1].split(".")[0]
         direct_url = f"https://i.imgur.com/{img_id}.png"
         logger.debug(f"URL do Imgur simplificada: {url} -> {direct_url}")
@@ -448,7 +462,7 @@ class WelcomeCog(commands.Cog):
     async def download_image(self, url: str, max_retries: int = 3) -> bytes:
         """Baixa uma imagem com retries para erro 429."""
         if not self.session:
-            self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/2.9"})
+            self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/3.0"})
         for attempt in range(max_retries):
             try:
                 async with self.session.get(url) as resp:
@@ -506,77 +520,35 @@ class WelcomeCog(commands.Cog):
         return lines[:max_lines]
 
     async def get_background(self, guild_id: str, background_url: str, color: List[int]) -> Image.Image:
-        """Obtém a imagem de fundo do cache, disco ou URL."""
+        """Obtém a imagem de fundo do cache ou URL."""
         img_width, img_height = 600, 225
-        backgrounds_dir = self.ensure_guild_directory(guild_id)
 
         # Fallback para fundo padrão
         if not background_url:
-            default_path = os.path.join(self.assets_dir, "default_background.png")
-            if not os.path.exists(default_path):
-                img = Image.new("RGBA", (img_width, img_height), tuple(color + [255]))
-                img.save(default_path, "PNG")
-                logger.info(f"Fundo padrão criado: {default_path}")
-            try:
-                img = Image.open(default_path).convert("RGBA").resize((img_width, img_height), Image.Resampling.LANCZOS)
-                logger.debug(f"Fundo padrão carregado: {default_path}")
-                return img
-            except Exception as e:
-                logger.error(f"Erro ao carregar fundo padrão {default_path}: {e}")
-                return Image.new("RGBA", (img_width, img_height), tuple(color + [255]))
-
-        # Verifica fundo local
-        if background_url.startswith("local://"):
-            file_name = background_url.replace("local://", "")
-            local_path = os.path.join(backgrounds_dir, file_name)
-            if os.path.exists(local_path):
-                try:
-                    img = Image.open(local_path).convert("RGBA")
-                    img = img.resize((img_width, img_height), Image.Resampling.LANCZOS)
-                    self.background_cache[background_url] = img
-                    logger.debug(f"Imagem de fundo local carregada: {local_path}")
-                    return img.copy()
-                except Exception as e:
-                    logger.error(f"Erro ao carregar fundo local {local_path}: {e}")
-            logger.warning(f"Fundo local {local_path} não encontrado. Usando padrão.")
-            return await self.get_background(guild_id, "", color)
+            img = Image.new("RGBA", (img_width, img_height), tuple(color + [255]))
+            logger.debug(f"Fundo padrão gerado para {guild_id}")
+            return img
 
         # Resolve URL
         resolved_url = await self.resolve_imgur_url(background_url)
-        url_hash = hashlib.md5(resolved_url.encode()).hexdigest()
-        local_path = os.path.join(backgrounds_dir, f"{url_hash}.png")
 
         # Carrega do cache em memória
         if resolved_url in self.background_cache:
             logger.debug(f"Imagem de fundo carregada do cache: {resolved_url}")
             return self.background_cache[resolved_url].copy()
 
-        # Carrega do disco
-        if os.path.exists(local_path):
-            try:
-                img = Image.open(local_path).convert("RGBA")
-                img = img.resize((img_width, img_height), Image.Resampling.LANCZOS)
-                self.background_cache[resolved_url] = img
-                logger.debug(f"Imagem de fundo carregada do disco: {local_path}")
-                return img.copy()
-            except Exception as e:
-                logger.error(f"Erro ao carregar fundo do disco {local_path}: {e}")
-
         # Baixa da URL
         try:
             data = await self.download_image(resolved_url)
             img = Image.open(io.BytesIO(data)).convert("RGBA")
             img = img.resize((img_width, img_height), Image.Resampling.LANCZOS)
-            try:
-                img.save(local_path, "PNG")
-                logger.info(f"Imagem de fundo salva: {resolved_url} -> {local_path}")
-            except Exception as e:
-                logger.error(f"Erro ao salvar fundo em {local_path}: {e}")
             self.background_cache[resolved_url] = img
+            logger.info(f"Imagem de fundo baixada: {resolved_url}")
             return img.copy()
         except Exception as e:
             logger.error(f"Erro ao baixar fundo {resolved_url}: {e}")
-            return await self.get_background(guild_id, "", color)
+            img = Image.new("RGBA", (img_width, img_height), tuple(color + [255]))
+            return img
 
     async def generate_preview(self, guild, elements: List[Element]) -> io.BytesIO:
         """Gera uma imagem de prévia com base nos elementos."""
@@ -605,7 +577,7 @@ class WelcomeCog(commands.Cog):
         # Baixa avatar de teste
         try:
             if not self.session:
-                self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/2.9"})
+                self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/3.0"})
             avatar_url = mock_member.default_avatar.url
             async with self.session.get(avatar_url) as resp:
                 if resp.status != 200:
@@ -621,28 +593,28 @@ class WelcomeCog(commands.Cog):
         text_element = next((e for e in elements if e.type == "text"), None)
         if avatar_element and text_element:
             try:
-                font_path = text_element.font_path or os.path.join(self.cog.font_dir, "Montserrat-ExtraBold.otf")
+                font_path = text_element.font_path or os.path.join(self.font_dir, "Montserrat-ExtraBold.otf")
                 font = ImageFont.truetype(font_path, text_element.font_size) if os.path.exists(font_path) else ImageFont.load_default()
             except Exception as e:
                 logger.warning(f"Fonte {text_element.font_path} não encontrada: {e}. Usando padrão.")
                 font = ImageFont.load_default()
 
             text = text_element.text.format(member=mock_member.name, guild=guild.name, count=guild.member_count)
-            lines = self.cog.wrap_text(text, font, 540)
+            lines = self.wrap_text(text, font, 540)
             line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
             line_spacing = max(5, int(text_element.font_size * 0.2))
             text_height = len(lines) * (line_height + line_spacing) - line_spacing
 
             # Centraliza avatar e texto verticalmente
             avatar_size = avatar_element.size
-            total_height = avatar_size + text_height + 20  # Espaço entre avatar e texto
+            total_height = avatar_size + text_height + 20
             avatar_y = (img_height - total_height) // 2
             text_y = avatar_y + avatar_size + 20
             avatar_x = (img_width - avatar_size) // 2
 
             avatar_element.x = avatar_x
             avatar_element.y = avatar_y
-            text_element.x = 0  # Ajustado dinamicamente por linha
+            text_element.x = 0
             text_element.y = text_y
 
             # Renderiza avatar
@@ -671,7 +643,6 @@ class WelcomeCog(commands.Cog):
                     fill=tuple(text_element.color + [int(255 * text_element.opacity)])
                 )
         else:
-            # Renderiza outros elementos (inalterado)
             for element in elements:
                 if element.type == "avatar":
                     avatar = avatar.resize((element.size, element.size), Image.Resampling.LANCZOS)
@@ -688,13 +659,13 @@ class WelcomeCog(commands.Cog):
                     background.paste(avatar, (element.x, element.y), avatar)
                 elif element.type == "text":
                     try:
-                        font_path = element.font_path or os.path.join(self.cog.font_dir, "Montserrat-ExtraBold.otf")
+                        font_path = element.font_path or os.path.join(self.font_dir, "Montserrat-ExtraBold.otf")
                         font = ImageFont.truetype(font_path, element.font_size) if os.path.exists(font_path) else ImageFont.load_default()
                     except Exception as e:
                         logger.warning(f"Fonte {element.font_path} não encontrada: {e}. Usando padrão.")
                         font = ImageFont.load_default()
                     text = element.text.format(member=mock_member.name, guild=guild.name, count=guild.member_count)
-                    lines = self.cog.wrap_text(text, font, 540)
+                    lines = self.wrap_text(text, font, 540)
                     line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
                     line_spacing = max(5, int(element.font_size * 0.2))
                     for i, line in enumerate(lines):
@@ -735,40 +706,33 @@ class WelcomeCog(commands.Cog):
         elements = self.load_template(guild_id)
         img_width, img_height = 600, 225
 
-        # Obtém fundo
         background_element = next((e for e in elements if e.type == "background"), None)
         if not background_element:
             background_element = BackgroundElement(source=config.get("background_url", ""))
-        logger.debug(f"Obtendo fundo para {guild_id}: {background_element.source}")
         background = await self.get_background(
             guild_id, background_element.source, background_element.color
         )
         draw = ImageDraw.Draw(background)
 
-        # Baixa o avatar do membro
         try:
             if not self.session:
-                self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/2.9"})
+                self.session = aiohttp.ClientSession(headers={"User-Agent": "DataBitBot/3.0"})
             avatar_url = str(member.avatar.url if member.avatar else member.default_avatar.url)
-            logger.debug(f"Baixando avatar: {avatar_url}")
             async with self.session.get(avatar_url) as resp:
                 if resp.status != 200:
                     raise Exception(f"Erro ao baixar avatar: {resp.status}")
                 avatar_data = await resp.read()
             avatar = Image.open(io.BytesIO(avatar_data)).convert("RGBA")
-            logger.debug(f"Avatar carregado para {member.id}")
         except Exception as e:
             logger.error(f"Erro ao processar avatar para {member.id}: {e}")
             avatar = Image.new("RGBA", (120, 120), (255, 255, 255, 255))
 
-        # Calcula posições dinamicamente para avatar e texto
         avatar_element = next((e for e in elements if e.type == "avatar"), None)
         text_element = next((e for e in elements if e.type == "text"), None)
         if avatar_element and text_element:
             try:
                 font_path = text_element.font_path or os.path.join(self.font_dir, "Montserrat-ExtraBold.otf")
                 font = ImageFont.truetype(font_path, text_element.font_size) if os.path.exists(font_path) else ImageFont.load_default()
-                logger.debug(f"Fonte carregada: {font_path}, tamanho: {text_element.font_size}")
             except Exception as e:
                 logger.warning(f"Fonte {text_element.font_path} não encontrada: {e}. Usando padrão.")
                 font = ImageFont.load_default()
@@ -778,9 +742,7 @@ class WelcomeCog(commands.Cog):
             line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
             line_spacing = max(5, int(text_element.font_size * 0.2))
             text_height = len(lines) * (line_height + line_spacing) - line_spacing
-            logger.debug(f"Texto quebrado em {len(lines)} linhas, altura total: {text_height}")
 
-            # Centraliza avatar e texto verticalmente
             avatar_size = avatar_element.size
             total_height = avatar_size + text_height + 20
             avatar_y = (img_height - total_height) // 2
@@ -789,11 +751,9 @@ class WelcomeCog(commands.Cog):
 
             avatar_element.x = avatar_x
             avatar_element.y = avatar_y
-            text_element.x = 0  # Ajustado por linha
+            text_element.x = 0
             text_element.y = text_y
-            logger.debug(f"Avatar: x={avatar_x}, y={avatar_y}, Texto: y={text_y}")
 
-            # Renderiza avatar
             avatar = avatar.resize((avatar_size, avatar_size), Image.Resampling.LANCZOS)
             mask = Image.new("L", (avatar_size, avatar_size), 0)
             mask_draw = ImageDraw.Draw(mask)
@@ -806,9 +766,7 @@ class WelcomeCog(commands.Cog):
                     width=4
                 )
             background.paste(avatar, (avatar_x, avatar_y), avatar)
-            logger.debug(f"Avatar renderizado para {member.id}")
 
-            # Renderiza texto centralizado
             for i, line in enumerate(lines):
                 text_bbox = draw.textbbox((0, 0), line, font=font)
                 text_width = text_bbox[2] - text_bbox[0]
@@ -819,9 +777,7 @@ class WelcomeCog(commands.Cog):
                     font=font,
                     fill=tuple(text_element.color + [int(255 * text_element.opacity)])
                 )
-            logger.debug(f"Texto renderizado para {member.id}")
         else:
-            # Renderiza outros elementos (inalterado)
             for element in elements:
                 if element.type == "avatar":
                     avatar = avatar.resize((element.size, element.size), Image.Resampling.LANCZOS)
@@ -881,7 +837,6 @@ class WelcomeCog(commands.Cog):
         finally:
             background.close()
             avatar.close()
-            logger.debug(f"Recursos de imagem liberados para {member.id}")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
@@ -891,7 +846,6 @@ class WelcomeCog(commands.Cog):
         guild_id = str(member.guild.id)
         config = self.load_config(guild_id)
 
-        # Atribui o cargo
         role_id = config.get("role_id")
         if role_id:
             role = member.guild.get_role(role_id)
@@ -902,7 +856,6 @@ class WelcomeCog(commands.Cog):
                 except Exception as e:
                     logger.error(f"Erro ao atribuir cargo a {member.id} em {guild_id}: {e}")
 
-        # Envia imagem de boas-vindas
         channel_id = config.get("channel_id")
         if channel_id:
             channel = self.bot.get_channel(channel_id)
@@ -920,7 +873,6 @@ class WelcomeCog(commands.Cog):
                             f"Bem-vindo(a) ao servidor, {member.mention}! 🎉\n"
                             f"(Erro ao gerar imagem de boas-vindas. Verifique a URL ou arquivo do fundo.)"
                         )
-                        # Notifica administrador
                         owner = self.bot.get_user(1219787450583486500)
                         if owner:
                             await owner.send(
@@ -930,7 +882,6 @@ class WelcomeCog(commands.Cog):
                     except Exception as send_e:
                         logger.error(f"Erro ao enviar mensagem de fallback em {guild_id}: {send_e}")
 
-        # Envia DM
         try:
             dm_message = (
                 f"Olá {member.name}, bem-vindo(a) ao **{member.guild.name}**! 🎉\n"
@@ -965,7 +916,6 @@ class WelcomeCog(commands.Cog):
         font_size: int = SlashOption(description="Tamanho da fonte (30-60)", required=False, min_value=30, max_value=60),
         background_file: nextcord.Attachment = SlashOption(description="Upload de imagem de fundo", required=False)
     ):
-        """Configura o sistema de boas-vindas com opções personalizáveis."""
         if not interaction.user.guild_permissions.administrator and interaction.user.id != 1219787450583486500:
             await interaction.response.send_message(
                 "Você precisa ser administrador ou dono do bot para usar este comando!",
@@ -975,9 +925,7 @@ class WelcomeCog(commands.Cog):
 
         guild_id = str(interaction.guild.id)
         config = self.load_config(guild_id)
-        backgrounds_dir = self.ensure_guild_directory(guild_id)
 
-        # Processa upload de imagem
         if background_file:
             try:
                 if not background_file.content_type.startswith("image/"):
@@ -988,11 +936,8 @@ class WelcomeCog(commands.Cog):
                     return
                 file_data = await background_file.read()
                 file_hash = hashlib.md5(file_data).hexdigest()
-                local_path = os.path.join(backgrounds_dir, f"{file_hash}.png")
-                with open(local_path, "wb") as f:
-                    f.write(file_data)
-                config["background_url"] = f"local://{file_hash}.png"
-                logger.info(f"Imagem de fundo carregada para {guild_id}: {local_path}")
+                config["background_url"] = f"attachment://{file_hash}.png"
+                logger.info(f"Imagem de fundo carregada via upload para {guild_id}")
             except Exception as e:
                 logger.error(f"Erro ao processar upload de fundo para {guild_id}: {e}")
                 await interaction.response.send_message(
@@ -1001,7 +946,6 @@ class WelcomeCog(commands.Cog):
                 )
                 return
 
-        # Atualiza configurações fornecidas
         if role:
             config["role_id"] = role.id
         if channel:
@@ -1060,7 +1004,6 @@ class WelcomeCog(commands.Cog):
         description="Edite a imagem de boas-vindas interativamente (apenas administradores)"
     )
     async def formater(self, interaction: Interaction):
-        """Comando para editar a imagem de boas-vindas com interface interativa."""
         if not interaction.user.guild_permissions.administrator and interaction.user.id != 1219787450583486500:
             await interaction.response.send_message(
                 "Você precisa ser administrador ou dono do bot para usar este comando!",
