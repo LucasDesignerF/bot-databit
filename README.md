@@ -16,7 +16,7 @@
     <img src="https://img.shields.io/badge/Nextcord-3.0.2-7289DA?style=flat-square&logo=discord" alt="Nextcord 3.0.2"/>
   </a>
   <a href="https://github.com/LucasDesignerF/bot-databit/releases">
-    <img src="https://img.shields.io/badge/Version-v2.3.2-orange?style=flat-square" alt="Versão do DataBit"/>
+    <img src="https://img.shields.io/badge/Version-v3.0.0-orange?style=flat-square" alt="Versão do DataBit"/>
   </a>
   <a href="https://github.com/LucasDesignerF/bot-databit/commits/main">
     <img src="https://img.shields.io/github/last-commit/LucasDesignerF/bot-databit?style=flat-square&color=purple" alt="Último Commit"/>
