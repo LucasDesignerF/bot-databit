@@ -39,120 +39,167 @@
 
 ### 🌟 Por que DataBit?
 
-O **DataBit** é um bot Discord *gratuito* e *open-source* projetado para simplificar a gestão de servidores. Com sistemas avançados de **tickets**, **registro**, **boas-vindas personalizadas** e **proteção anti-raid**, ele é perfeito para comunidades de qualquer tamanho. Desenvolvido com paixão pela **CodeProjects** e **RedeGamer**, o DataBit oferece uma experiência fluida, escalável e altamente personalizável!
+O **DataBit** é um bot Discord *gratuito* e *open-source* projetado para simplificar a gestão de servidores com sistemas avançados de **tickets**, **registro**, **boas-vindas personalizadas** e **proteção anti-raid**. Desenvolvido pela **CodeProjects** com contribuições da **RedeGamer** e otimizações da **Grok (xAI)**, ele é perfeito para comunidades de jogos e servidores que buscam automação, segurança e escalabilidade.
 
 - ✨ **Gratuito e Open-Source**: Código aberto, sem custos ocultos.
 - 🛠️ **Fácil de Configurar**: Comandos intuitivos e setup rápido.
 - 🎨 **Personalização Total**: Embeds, imagens e mensagens sob medida.
-- 🛡️ **Seguro e Confiável**: Proteção contra raids e hospedagem na Discloud.
+- 🛡️ **Seguro e Confiável**: Proteção contra raids e integração com SQLite.
 
-Visite nosso [site oficial](https://databit-freebot.redebots.shop/) ou junte-se ao [servidor de suporte](https://discord.gg/AhcHfUpNeM)!
+Visite nosso site oficial ou junte-se ao servidor de suporte!
 
 ---
 
 ### ✨ Recursos Principais
 
-#### 🎟 Sistema de Tickets
-- 🗂 Criação de tickets por categorias (Suporte, Compras, Parcerias, etc.).
-- 🖱 Painel interativo com botões para assumir, notificar e encerrar.
-- ⏳ Fechamento automático de tickets inativos.
-- ⭐ Avaliação do atendimento após o encerramento.
+O DataBit é composto por quatro módulos principais (cogs), cada um com funcionalidades específicas:
 
-#### 📝 Sistema de Registro
-- 📋 Embeds personalizáveis com upload de imagens locais ou URLs validadas.
+#### 🎟 Sistema de Tickets (`ticket_cog.py`)
+
+- 🗂 Criação de tickets por categorias (ex.: Suporte, Compras, Parcerias).
+- 🖱 Painel interativo com botões para assumir, notificar e encerrar tickets.
+- ⏳ Monitoramento de inatividade com notificações e fechamento automático.
+- 📜 Transcrições em HTML estilizadas com Tailwind CSS, disponíveis online ou para download.
+- ⭐ Sistema de avaliação do atendimento com notas de 1 a 5.
+- **Comandos**:
+  - `/config_tickets`: Configura canais, cargos e tempos de inatividade.
+  - `/create_ticket_menu`: Cria um menu interativo para abertura de tickets.
+  - `/add_category`, `/edit_category`, `/remove_category`: Gerencia categorias de tickets.
+  - `/person_tickets`: Personaliza embeds do sistema.
+
+#### 📝 Sistema de Registro (`register_cog.py`)
+
+- 📋 Embeds personalizáveis com upload de imagens ou URLs validadas.
 - 🛡 Atribuição automática de cargos via botão interativo.
-- 🔗 Integração com o sistema de boas-vindas.
+- 🔗 Integração com o sistema de boas-vindas para gerenciamento de cargos.
+- **Comandos**:
+  - `/config_register`: Define o cargo de registro.
+  - `/person_register`: Personaliza a embed de registro.
+  - `/create_register_embed`: Gera a embed com botão de registro.
 
-#### 🎉 Sistema de Boas-Vindas
-- 🖼 Imagens dinâmicas criadas com o editor interativo `/formater`.
+#### 🎉 Sistema de Boas-Vindas (`welcome_cog.py`)
+
+- 🖼 Embeds personalizáveis com suporte a variáveis `{member}`, `{guild}`, `{count}`.
 - 🎭 Atribuição automática de cargos iniciais.
-- ✉️ Mensagem privada de boas-vindas para novos membros.
+- ✉️ Mensagens privadas de boas-vindas.
+- 🔗 Validação de URLs de imagens para qualquer serviço de hospedagem (ex.: Imgur, Discord CDN).
+- **Comando**:
+  - `/config_welcome`: Configura canal, cargo, embed e mensagem de DM.
 
-#### 🛡️ Proteção Anti-Raid
-- 🚨 Monitoramento de atividades suspeitas.
-- 🔒 Lockdowns automáticos configuráveis para proteger o servidor.
+#### 🛡️ Proteção Anti-Raid (`antiraid_cog.py`)
+
+- 🚨 Monitoramento de atividades suspeitas (mensagens, canais, bans, cargos, convites).
+- 🔒 Lockdowns automáticos configuráveis para restringir permissões do `@everyone`.
+- 🖱 Interface interativa com botões e menus para configuração.
+- 📋 Suporte a whitelist de cargos para administradores.
+- **Comando**:
+  - `/config_antiraid`: Configura limites e canais de log.
 
 ---
 
 ### 📋 Pré-requisitos
 
-- 🐍 **Python 3.12+**
-- 📦 **Dependências**: `nextcord`, `Pillow`, `python-dotenv`, `aiohttp`
-- 🔑 **Token do Discord**: Crie um bot em [Discord Developer Portal](https://discord.com/developers/applications)
+- 🐍 **Python 3.9+**
+- 📦 **Dependências**:
+  - `nextcord`
+  - `aiohttp`
+  - `python-dotenv`
+  - `Pillow` (para manipulação de imagens no `/formater`)
+- 🔑 **Token do Discord**: Crie um bot em Discord Developer Portal
+- 💾 **SQLite**: Banco de dados para armazenamento de configurações
 
 ---
 
 ### ⚙️ Instalação
 
-1. **Clone o repositório**  
+1. **Clone o repositório**
+
    ```bash
    git clone https://github.com/LucasDesignerF/bot-databit.git
    cd bot-databit
    ```
 
-2. **Instale as dependências**  
+2. **Instale as dependências**
+
    ```bash
-   pip install -r requirements.txt
+   pip install nextcord aiohttp python-dotenv Pillow
    ```
 
-3. **Configure o `.env`**  
-   Crie um arquivo `.env` na raiz e adicione:  
+3. **Configure o** `.env`\
+   Crie um arquivo `.env` na raiz e adicione:
+
    ```env
    DISCORD_TOKEN=seu_token_aqui
    ```
 
-4. **Inicie o bot**  
+4. **Estruture o projeto**
+
+   ```
+   bot-databit/
+   ├── cogs/
+   │   ├── antiraid_cog.py      # Proteção anti-raid (v3.0)
+   │   ├── register_cog.py      # Sistema de registro (v3.0.1)
+   │   ├── ticket_cog.py        # Sistema de tickets (v5.3)
+   │   ├── welcome_cog.py       # Sistema de boas-vindas (v4.1)
+   ├── fonts/                   # Fontes personalizadas
+   ├── transcripts/             # Transcrições de tickets
+   ├── .env                     # Configurações do ambiente
+   ├── main.py                  # Arquivo principal
+   ├── ticket_system.db         # Banco de dados SQLite
+   └── README.md                # Documentação
+   ```
+
+5. **Crie o** `main.py`
+
+   ```python
+   import nextcord
+   from nextcord.ext import commands
+   import sqlite3
+   import os
+   from dotenv import load_dotenv
+   
+   load_dotenv()
+   bot = commands.Bot(command_prefix='/', intents=nextcord.Intents.all())
+   bot.db = sqlite3.connect('ticket_system.db')
+   
+   for filename in os.listdir('./cogs'):
+       if filename.endswith('.py'):
+           bot.load_extension(f'cogs.{filename[:-3]}')
+   
+   bot.run(os.getenv('DISCORD_TOKEN'))
+   ```
+
+6. **Inicie o bot**
+
    ```bash
    python main.py
    ```
 
-*Hospede na [Discloud](https://discloud.app/) para uptime 24/7. Veja a [documentação](https://github.com/LucasDesignerF/bot-databit).*
+*Hospede na Discloud para uptime 24/7. Veja a documentação.*
 
 ---
 
 ### 🛠 Como Usar
 
-#### Comandos Principais
-| **Comando**                | **Descrição**                                              |
-|----------------------------|------------------------------------------------------------|
-| `/config_tickets`          | Configura o sistema de tickets com categorias e canais.     |
-| `/create_ticket_menu`      | Cria um menu interativo para abertura de tickets.           |
-| `/config_register`         | Define o cargo e canal para o sistema de registro.          |
-| `/create_register_embed`   | Gera uma embed de registro com botão interativo.           |
-| `/config_welcome`          | Personaliza mensagens e imagens de boas-vindas.             |
-| `/formater`                | Editor interativo para criar imagens de boas-vindas únicas. |
-
-*Consulte a [documentação](https://docs.codeprojects.discloud.app/) para mais comandos.*
-
----
-
-### 📂 Estrutura do Projeto
-
-```
-bot-databit/
-├── cogs/                    # Módulos do bot
-│   ├── antiraid_cog.py      # Proteção anti-raid
-│   ├── register_cog.py      # Sistema de registro (v2.3.2)
-│   ├── ticket_cog.py        # Sistema de tickets
-│   └── welcome_cog.py       # Sistema de boas-vindas
-├── data/                    # Dados salvos por servidor
-├── fonts/                   # Fontes personalizadas
-├── .env                     # Configurações do ambiente
-├── main.py                  # Arquivo principal
-├── requirements.txt         # Dependências
-└── README.md                # Documentação
-```
+1. **Adicione o bot ao servidor** com permissões de administrador.
+2. **Configure os sistemas** usando os comandos:
+   - `/config_tickets` para tickets.
+   - `/config_register` e `/create_register_embed` para registro.
+   - `/config_welcome` para boas-vindas.
+   - `/config_antiraid` para proteção anti-raid.
+3. **Personalize**:
+   - Use `/person_tickets` e `/person_register` para editar embeds.
+   - Adicione categorias de tickets com `/add_category`.
+   - Use `/formater` para criar imagens dinâmicas de boas-vindas.
+4. **Consulte a documentação** em docs.codeprojects.discloud.app para mais detalhes.
 
 ---
 
 ### 🎨 Personalização
 
-#### 🖼 Imagens e Fontes
-- Use imagens locais ou URLs no sistema de registro e boas-vindas (`/formater`).
-- Adicione fontes na pasta `fonts/` e atualize os caminhos nos cogs.
-
-#### 🌈 Cores e Textos
-- Edite cores RGB e textos diretamente nos arquivos dos cogs (`cogs/*.py`).
+- **Imagens e Fontes**: Use URLs ou uploads locais para embeds (`/person_register`, `/person_tickets`). Adicione fontes na pasta `fonts/` para o `/formater`.
+- **Cores e Textos**: Configure cores RGB e mensagens nos comandos de personalização ou diretamente nos cogs.
+- **Emojis**: Suporte a emojis personalizados nos sistemas de tickets e boas-vindas.
 
 ---
 
@@ -164,22 +211,22 @@ bot-databit/
 4. 🚀 Push para a branch: `git push origin feature/sua-ideia`.
 5. 📬 Abra um Pull Request.
 
-Junte-se ao [servidor de suporte](https://discord.gg/AhcHfUpNeM) para discutir ideias!
+Junte-se ao servidor de suporte para discutir ideias!
 
 ---
 
 ### 📜 Licença
 
-Licenciado sob a **[MIT License](LICENSE)**. Veja mais detalhes no arquivo de licença.
+Licenciado sob a **MIT License**. Veja mais detalhes no arquivo de licença.
 
 ---
 
 ### 📞 Contato
 
-- 🌐 **Website**: [codeprojects.discloud.app](https://databit-freebot.redebots.shop/)
-- 💬 **Discord**: [Servidor Oficial](https://discord.gg/AhcHfUpNeM) | `lrfortes`
-- 🐙 **GitHub**: [LucasDesignerF](https://github.com/LucasDesignerF)
-- 📧 **Email**: [ofc.rede@gmail.com](mailto:ofc.rede@gmail.com)
+- 🌐 **Website**: codeprojects.discloud.app
+- 💬 **Discord**: Servidor Oficial | `lrfortes`
+- 🐙 **GitHub**: LucasDesignerF
+- 📧 **Email**: ofc.rede@gmail.com
 
 ---
 
